@@ -1,18 +1,18 @@
 @font-face {
 	font-family: kenyan-coffee;
-	src: url("kenyan_coffee_rg.ttf");
+	src: url("../fonts/kenyan_coffee_rg.ttf");
 }
 @font-face {
 	font-family: Aquawax;
-	src: url("Aquawax_Black_Trial.ttf");
+	src: url("../fonts/Aquawax_Black_Trial.ttf");
 }
 @font-face {
 	font-family: PoetsenOne;
-	src: url("PoetsenOne-Regular.ttf");
+	src: url("../fonts/PoetsenOne-Regular.ttf");
 }
 @font-face {
 	font-family: Timeless;
-	src: url("Timeless.ttf");
+	src: url("../fonts/Timeless.ttf");
 }
 * {
 	box-sizing: border-box;
