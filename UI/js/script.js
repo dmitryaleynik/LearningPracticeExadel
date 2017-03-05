@@ -1,4 +1,4 @@
-var articles = [
+articles = [
 	{
 		id: 1,
 		title: 'Не пропустите розыгрыш билетов на концерт Brutto в Минске',
@@ -190,135 +190,135 @@ var articles = [
 		'первые в Беларуси поместья. Сейчас 213 семей построили или строят свои поместья, по данным портала ecoby.info, с детьми это более 550 человек. Не все они придерживаются общей ' +
 		'идеологии, но все отмечают: книги помогли сформироваться мечте об идеальной жизни. И жизнь эта никак не возможна в городе. Кто-то из помещиков обустраивается в заброшенной' +
 		' деревне и предлагает присоединиться другим добрым людям, кто-то сам присоединяется к развитым родовым поселениям. Самое крупное — «Росы» в Воложинском районе — тут живет постоянно 21 семья, подрастает 34 ребенка.'
-	}]
+	}];
 
-	function compareArticles(a, b) {
-        if (a.createdAt > b.createdAt) return 1;
-        else return -1;
-    }
 
-	function getArticles(skip, top, obj) {
-        var temp = [];
-        if (obj != undefined)
-            articles.forEach(function (item, i, articles) {
-               if (item.author == obj.author)
-                   temp.push(item);
-            });
-        if (temp.length == 0)
-            temp = articles.slice(0, articles.length);
-        var sskip = skip||0;
-        var ttop = top||10;
-		temp.sort(compareArticles);
-        temp = temp.slice(sskip, ttop);
-        console.log(articles);
-        console.log('\n\n\n');
-		console.log(temp);
-		return temp;
+function compareArticles(a, b) {
+	return (a.createdAt > b.createdAt) ? 1 : -1;
+}
+
+function getArticles(skip, top, obj) {
+	var temp = [];
+	if (obj != undefined)
+		articles.forEach(function (item) {
+			if (item.author == obj.author)
+				temp.push(item);
+		});
+	if (temp.length == 0)
+		temp = articles.slice(0, articles.length);
+	var sskip = skip||0;
+	var ttop = top||10;
+	temp.sort(compareArticles);
+	temp = temp.slice(sskip, ttop);
+	console.log(articles);
+	console.log('\n\n\n');
+	console.log(temp);
+	return temp;
+}
+
+function getArticle(id) {
+	if (isNaN(+id)) {
+		console.log('Your id is invalid.');
+		return false;
 	}
+	for (var i = 0; i < articles.length; ++i) {
+		if (articles[i].id != id)
+			continue;
+		console.log(articles[i]);
+		return articles[i];
+	}
+	console.log('Such article doesn\'t exist.');
+	return null;
+}
 
-	function getArticle(id) {
-        if (isNaN(+id)) {
-            console.log('Your id is invalid.');
-            return false;
-        }
-        for (var i = 0; i < articles.length; ++i) {
-            if (articles[i].id != id)
-                continue;
-            console.log(articles[i]);
-            return articles[i];
-        }
-        console.log('Such article doesn\'t exist.');
-        return null;
-    }
+function validateArticle(article, mode) {
+	if (mode == true) {
+		if (Object.keys(article).length > 6)
+			return false;
+		var a = Number(article.id);
+		if (isNaN(a))
+			return false;
+		if (typeof article.title != 'string' || article.title.length >= 100)
+			return false;
+		if (typeof article.summary != 'string' || article.summary.length >= 200)
+			return false;
+		if (!article.createdAt instanceof Date)
+			return false;
+		if (typeof article.author != 'string')
+			return false;
+		if (typeof article.content != 'string')
+			return false;
+		return true;
+	}
+	else {
+		if (article.title == undefined && article.summary == undefined && article.content == undefined)
+			return false;
+		if (article.title != undefined) {
+			if (typeof article.title != 'string')
+				return false;
+			else if (article.title.length >= 100)
+				return false;
+		}
+		if (article.summary != undefined) {
+			if (typeof article.summary != 'string')
+				return false;
+			else if (article.summary.length >= 200)
+				return false;
+		}
+		if (article.content != undefined) {
+			if (article.content != 'string')
+				return false;
+		}
+		return true;
+	}
+}
 
-    function validateArticle(article, mode) {
-        if (mode == true) {
-            if (Object.keys(article).length > 6)
-                return false;
-            var a = Number(article.id);
-            if (isNaN(a))
-                return false;
-            if (typeof article.title != 'string' || article.title.length >= 100)
-                return false;
-            if (typeof article.summary != 'string' || article.summary.length >= 200)
-                return false;
-            if (!article.createdAt instanceof Date)
-                return false;
-            if (typeof article.author != 'string')
-                return false;
-            if (typeof article.content != 'string')
-                return false;
-            return true;
-        }
-        else {
-            if (article.title == undefined && article.summary == undefined && article.content == undefined)
-                return false;
-            if (article.title != undefined) {
-                if (typeof article.title != 'string')
-                    return false;
-                else if (article.title.length >= 100)
-                    return false;
-            }
-            if (article.summary != undefined) {
-                if (typeof article.summary != 'string')
-                    return false;
-                else if (article.summary.length >= 200)
-                    return false;
-            }
-            if (article.content != undefined) {
-                if (article.content != 'string')
-                    return false;
-            }
-            return true;
-        }
-    }
+function addArticle(article) {
+	if (!validateArticle(article, true))
+		return false;
+	var a = +article.id;
+	for (var i = 0; i < articles.length; ++i)
+		if (a == articles[i].id)
+			return false;
+	articles.push(article);
+	console.log(articles);
+	return true;
+}
 
-    function addArticle(article) {
-        if (!validateArticle(article, true))
-            return false;
-        var a = +article.id;
-        for (var i = 0; i < articles.length; ++i)
-            if (a == articles[i].id)
-                return false;
-        articles.push(article);
-        console.log(articles);
-        return true;
-    }
+function editArticle(id, article) {
+	if (!validateArticle(article, false))
+		return false;
+	for (var i = 0; i < articles.length; ++i) {
+		if (articles[i].id == id) {
+			console.log(articles[i]);
+			console.log('\n\n\n');
+			if (article.title != undefined)
+				articles[i].title = article.title;
+			if (article.summary != undefined)
+				articles[i].summary = article.summary;
+			if (article.content != undefined)
+				articles[i].content = article.content;
+			console.log(articles[i]);
+			return true;
+		}
+	}
+	return false;
+}
 
-    function editArticle(id, article) {
-    if (!validateArticle(article, false))
-        return false;
-        for (var i = 0; i < articles.length; ++i) {
-            if (articles[i].id == id) {
-                console.log(articles[i]);
-                console.log('\n\n\n');
-                if (article.title != undefined)
-                    articles[i].title = article.title;
-                if (article.summary != undefined)
-                    articles[i].summary = article.summary;
-                if (article.content != undefined)
-                    articles[i].content = article.content;
-            console.log(articles[i]);
-            return true;
-            }
-        }
-        return false;
-    }
+function removeArticle(id) {
+	if (isNaN(+id)) {
+		console.log('Your id is invalid.');
+		return false;
+	}
+	for (var i = 0; i < articles.length; ++i)
+		if (articles[i].id == id) {
+			articles.splice(i, 1);
+			console.log(articles);
+			return true;
+		}
+	return false;
+}
 
-    function removeArticle(id) {
-        if (isNaN(+id)) {
-            console.log('Your id is invalid.');
-            return false;
-        }
-        for (var i = 0; i < articles.length; ++i)
-            if (articles[i].id == id) {
-                articles.splice(i, 1);
-                console.log(articles);
-                return true;
-            }
-        return false;
-    }
-    
 getArticles();
 console.log('\n\n\n');
 getArticles(0, 4, {author: 'Андрей'});
@@ -326,10 +326,10 @@ console.log('\n\n\n');
 getArticle(3);
 console.log('\n\n\n');
 console.log(validateArticle({id:'22', title: 'adfdfdfdfdfdfd', summary: 'dsdsdsdfkgljdfgfdjghd',
-    createdAt: new Date('2017-03-05T18:57:00'), author: 'Kekeke', content: 'dfldjfkkdlg;fjgeproervm,cvfkl'}, true));
+	createdAt: new Date('2017-03-05T18:57:00'), author: 'Kekeke', content: 'dfldjfkkdlg;fjgeproervm,cvfkl'}, true));
 console.log('\n\n\n');
 console.log(addArticle({id:'22', title: 'adfdfdfdfdfdfd', summary: 'dsdsdsdfkgljdfgfdjghd',
-        createdAt: new Date('2017-03-05T18:57:00'), author: 'Kekeke', content: 'dfldjfkkdlg;fjgeproervm,cvfkl'}));
+	createdAt: new Date('2017-03-05T18:57:00'), author: 'Kekeke', content: 'dfldjfkkdlg;fjgeproervm,cvfkl'}));
 console.log('\n\n\n');
 console.log(editArticle(5, {title: 'qwerty'}));
 console.log('\n\n\n');
@@ -338,3 +338,4 @@ console.log('\n\n\n');
 console.log(editArticle(4, {}));
 console.log('\n\n\n');
 console.log(removeArticle('22'));
+
