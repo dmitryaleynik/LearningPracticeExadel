@@ -33,7 +33,7 @@ body {
 header {
 	width: 100%;
 	height: 70px;
-	margin-bottom: 70px;
+	margin-bottom: 50px;
 	background-color: #f0f0f0;
 	border-bottom: .5px solid #d6d6d6;
 }
@@ -68,10 +68,12 @@ footer {
 	float: left;
 }
 #logoText {
+	float: left;
 	font-size: 30px;
-	font-family: PoetsenOne, sans-serif; 
-	position: relative;
+	font-family: PoetsenOne, sans-serif;
 	top: 15px;
+	margin-top: 12px;
+	margin-left: 20px;
 }
 #authorize {
 	font-size: 25px;
@@ -88,16 +90,29 @@ footer {
 	margin: 0 auto;
 }
 .news {
+	position: relative;
 	font-family: Timeless, serif;
-	overflow: hidden;
 	background-color: #fafafa;
 	font-size: 20px;
+	height: 400px;
 	width: 27%;
-	height: 300px;
 	margin: 1% 1%;
 	padding: 5px;
-	text-align: justify;
-	border: 1px dashed black;
+	text-align: left;
+	border: 1px solid black;
+}
+.news h3 {
+	margin: 5px 0 20px;
+	height: 100px;
+}
+.summary {
+	height: 200px;
+}
+.news hr {
+	margin: 1px -5px;
+}
+.newsMeta {
+	font-size: .9em;
 }
 #newsGrid {
 	width: 70%;
@@ -105,9 +120,6 @@ footer {
 	flex-direction: row;
 	flex-wrap: wrap;
 	float: left;
-}
-#yourNews {
-	text-align: right;
 }
 .button {
 	font-family: PoetsenOne, sans-serif;
