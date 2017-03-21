@@ -332,8 +332,8 @@ var articleRenderer = (function() {
 	var AUTHORIZE_SECTION;
 
 	function init() {
-		ARTICLE_TEMPLATE = document.querySelector('#template-article-list-item');
-		ARTICLE_LIST_NODE = document.querySelector('#newsGrid');
+		ARTICLE_TEMPLATE = document.querySelector('#template-article-grid-item');
+		ARTICLE_LIST_NODE = document.querySelector('.news-grid');
 		FILTER_SECTION = document.querySelector('#filter-section');
 		FILTER_TEMPLATE = document.querySelector('#filter-item-template');
 		AUTHORIZE_SECTION = document.querySelector('#authorize');
@@ -386,12 +386,12 @@ var articleRenderer = (function() {
 
     function renderArticle (article) {
 		var template = ARTICLE_TEMPLATE;
-        template.content.querySelector('.article-list-item').dataset.id = article.id;
-        template.content.querySelector('.article-list-item-title').textContent = article.title;
-        template.content.querySelector('.article-list-item-summary').textContent = article.summary;
-        template.content.querySelector('.article-list-item-author').textContent = article.author;
-        template.content.querySelector('.article-list-item-date').textContent = formatDate(article.createdAt);
-		return template.content.querySelector('.article-list-item').cloneNode(true);
+        template.content.querySelector('.article-grid-item').dataset.id = article.id;
+        template.content.querySelector('.article-grid-item-title').textContent = article.title;
+        template.content.querySelector('.article-grid-item-summary').textContent = article.summary;
+        template.content.querySelector('.article-grid-item-author').textContent = article.author;
+        template.content.querySelector('.article-grid-item-date').textContent = formatDate(article.createdAt);
+		return template.content.querySelector('.article-grid-item').cloneNode(true);
 	}
 
     function formatDate(d) {

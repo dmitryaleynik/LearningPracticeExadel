@@ -2,64 +2,47 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<link rel="stylesheet" href="css/styles.css">
+	<link type="text/css" rel="stylesheet" href="css/styles.css">
 	<title>Newsportal</title>
 </head>
 <body>
 <header>
-	<div class="insider">
-		<img id="logo" src="images/logo.png">
-		<span id="logoText">Newsportal</span>
-		<span id="authorize">name</span>
-	</div>
+	<nav class="inside header-inside">
+		<a class="brand" href="index.html">
+			<img src="images/logo.png">
+			<span>Newsportal</span>
+		</a>
+		<nav class="nav-buttons">
+			<div class="authorize-section">
+				Name
+			</div>
+		</nav>
+	</nav>
 </header>
-<div id="content">
-	<div id="filter">
-		<span>Filter news: </span>
-		<select id="filter-section">
-		</select>
-	</div>
-	<div id="newsGrid">
-	</div>
-</div>
-<div id="yourNews">
-	<a href="#" class="button">Suggest an article</a>
-</div>
-<div id="pagination">
-	<a href="#" id="seeMore">see more<div id="down"></div></a>
+
+<div class="inside content">
+	<section class="news-grid">
+
+	</section>
 </div>
 <footer>
-	<div class="insider">
+	<div class="inside">
 		Developed by scream_cha. All rights reserved☻
 	</div>
 </footer>
-
-
-<template id="template-article-list-item">
-	<div class="news page-item article-list-item" data-id="id">
-		<h3 class="article-list-item-title">
-			Заголовок статьи
-		</h3>
-		<p class="summary article-list-item-summary">
-			Краткое описание для статьи. Тут краткое описание
-		</p>
-		<div class="newsMeta article-list-item-meta">
-			<hr>
-			<span>Автор: <span class="article-list-item-author">Досов Антон</span></span>
-			<br>
-			<span>Опубликована: <span class="article-list-item-date">12.12.1995 04:35</span></span>
+<template id="template-article-grid-item" data-id="">
+	<section class="article-grid-item col-lg-4 col-md-6">
+		<div class="article-grid-item-inside">
+			<h3 class="article-grid-item-title"></h3>
+			<p class="article-grid-item-summary"></p>
+			<div class="article-grid-item-footer">
+				<span class="article-grid-item-author"></span>
+				<span class="article-grid-item-date"></span>
+			</div>
 		</div>
-	</div>
+	</section>
 </template>
-<template id="filter-item-template">
-	<option id="filter-item" value=""></option>
-</template>
-<template id="template-article-content">
-	<div class="article-content page-item">
-		Here'll be content.
-	</div>
-</template>
-<script src="js/script.js" type="text/javascript"></script>
-<script src="js/listeners.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>
