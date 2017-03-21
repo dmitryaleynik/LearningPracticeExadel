@@ -200,22 +200,22 @@ var articlesService = (function() {
 	}
 
 	function sortByDate(articles) {
-		articles.sort(compareArticles);
+		return articles.sort(compareArticles);
 	}
 
 	function getArticles(skip, top, obj) {
-		var temp = [];
+		var subarticles = [];
 		if (obj)
-			temp = articles.filter(function(item){
+			subarticles = articles.filter(function(item){
 				return item.author == obj.author;
 			});
 		else
-			temp = articles.slice(0, articles.length);
+			subarticles = articles.slice(0, articles.length);
 		var sskip = skip||0;
 		var ttop = top||9;
-		sortByDate(temp);
-		temp = temp.slice(sskip, sskip+ttop);
-		return temp;
+		var sortedSubarticles = sortByDate(subarticles);
+		sortedSubarticles = sortedSubarticles.slice(sskip, sskip+ttop);
+		return sortedSubarticles;
 	}
 
 	function getArticle(id) {
@@ -233,7 +233,7 @@ var articlesService = (function() {
 
 	function validateArticle(article, mode) {
 		if (mode) {
-			if (Object.keys(article).length > 6)
+			if (Object.keys(article).length != 6)
 				return false;
 			var a = Number(article.id);
 			if (isNaN(a))
@@ -355,6 +355,7 @@ var articleRenderer = (function() {
     }
 
     function renderFilter(articles) {
+		FILTER_SECTION.innerHTML = "";
 		var set = new Set(articles.map(function(item) {
 			return item.author;
 		}));
@@ -409,53 +410,58 @@ var articleRenderer = (function() {
 
 document.addEventListener('DOMContentLoaded', startApp);
 
-var articles = [];
+var shownArticles = [];
+var currentPaginationArticles = [];
 var user = "Oleg Olegov";
 
 function startApp() {
 	articleRenderer.init();
-	renderArticles(0, 9);
+	renderArticles(0, 3);
 	articleRenderer.renderUser(user);
-	articleRenderer.renderFilter(articles);
 }
 
 function renderArticles(skip, top, obj) {
-	articleRenderer.removeArticlesFromDOM();
-	articles = articlesService.getArticles(skip, top, obj);
-	articleRenderer.insertArticlesInDOM(articles);
+	currentPaginationArticles = articlesService.getArticles(skip, top, obj);
+	currentPaginationArticles.forEach(function (item) {
+		shownArticles.push(item);
+    });
+	articleRenderer.insertArticlesInDOM(currentPaginationArticles);
 }
 
 function addArticle (article) {
     if (articlesService.addArticle(article)) {
-        articles.push(article);
-        articlesService.sortByDate(articles);
+        shownArticles.push(article);
+        articlesService.sortByDate(shownArticles);
         articleRenderer.removeArticlesFromDOM();
-        articleRenderer.insertArticlesInDOM(articles);
+        articleRenderer.insertArticlesInDOM(shownArticles);
     }
 }
 
 function removeArticle(id) {
 	if (articlesService.removeArticle(id)) {
-		var temp = articles.find(function (elem) {
+		var temp = shownArticles.find(function (elem) {
 			return elem.id == id;
 		});
 		if (temp) {
-			articles.splice(articles.indexOf(temp), 1);
+			shownArticles.splice(shownArticles.indexOf(temp), 1);
 			articleRenderer.removeArticlesFromDOM();
-			articleRenderer.insertArticlesInDOM(articles);
+			articleRenderer.insertArticlesInDOM(shownArticles);
 		}
 	}
 }
 
 function editArticle(id, obj) {
 	if (articlesService.editArticle(id, obj)) {
-        var article = articlesService.getArticle(id);
-        if (article) {
-            articles.splice(articles.indexOf(article), 1);
-            articles.push(article);
-            articlesService.sortByDate(articles);
+		var newArticle = articlesService.getArticle(id);
+        var oldArticle = shownArticles.find(function(item){
+        	return item.id == id;
+        });
+        if (oldArticle) {
+            shownArticles.splice(shownArticles.indexOf(oldArticle), 1);
+            shownArticles.push(newArticle);
+            articlesService.sortByDate(shownArticles);
             articleRenderer.removeArticlesFromDOM();
-            articleRenderer.insertArticlesInDOM(articles);
+            articleRenderer.insertArticlesInDOM(shownArticles);
         }
     }
 }

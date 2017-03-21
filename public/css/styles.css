@@ -89,21 +89,28 @@ footer {
 	width: 80%;
 	margin: 0 auto;
 }
-.news {
-	position: relative;
+.page-item {
 	font-family: Timeless, serif;
 	background-color: #fafafa;
 	font-size: 20px;
+	border: 1px solid black;
+}
+.article-content {
+	width: 90%;
+	padding: 5px;
+	margin-top: 20px;
+}
+.news {
+	position: relative;
 	height: 400px;
 	width: 27%;
 	margin: 1% 1%;
 	padding: 5px;
-	text-align: left;
-	border: 1px solid black;
 }
 .news h3 {
 	margin: 5px 0 20px;
 	height: 100px;
+	cursor: pointer;
 }
 .summary {
 	height: 200px;
@@ -135,6 +142,7 @@ a.button:hover {
 	background-color: #eee;
 }
 #pagination {
+	position: relative;
 	font-family: "Times New Roman", sans-serif; 
 	clear: left;
 	float: left;
@@ -150,8 +158,13 @@ a.button:hover {
 	color: lightgray;
 }
 #down {
-	position: relative;
-	width: 27px;
+	position: absolute;
+	background: url('../images/arrow_down.png') no-repeat;
+	width: 40px;
 	height: 27px;
-	top: 7px;
+	right: -40px;
+	bottom: -2px;
+}
+#down:hover {
+	background: url('../images/arrow_down_pressed.png') no-repeat;
 }
