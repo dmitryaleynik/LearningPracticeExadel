@@ -311,6 +311,4 @@ var articles11 = [
         'threat in years to long-running President Alexander Lukashenko. He has been seeking to improve' +
         ' ties with the west and the EU, as relations cool with former Soviet ruler Russia.'
     }
-];/**
- * Created by Lenovo on 2017-03-27.
- */
+];

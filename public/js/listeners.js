@@ -13,7 +13,7 @@ var pagination = (function () {
         FILTER = filter;
         CURRENT_PAGE = 1;
         SHOW_MORE_CALLBACK = showMoreCb;
-        SHOW_MORE_BUTTON = document.getElementById('pagination');
+        SHOW_MORE_BUTTON = document.getElementById('pagination-button');
         SHOW_MORE_BUTTON.addEventListener('click', handleShowMoreClick);
         SHOW_MORE_CALLBACK(0, 3, FILTER);
         SHOW_MORE_BUTTON.hidden = false;
