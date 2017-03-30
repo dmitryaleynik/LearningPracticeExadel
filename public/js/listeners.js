@@ -11,7 +11,7 @@ var pagination = (function () {
     function init(total, showMoreCb) {
         TOTAL = total;
         SHOW_MORE_CALLBACK = showMoreCb;
-        SHOW_MORE_BUTTON = document.getElementById('pagination');
+        SHOW_MORE_BUTTON = document.getElementById('pagination-button');
         SHOW_MORE_BUTTON.addEventListener('click', handleShowMoreClick);
 
         if (getTotalPages() <= CURRENT_PAGE) {

@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<link href="https://fonts.googleapis.com/css?family=Fredoka+One|Merriweather+Sans:300,400|Old+Standard+TT" rel="stylesheet">
 	<link type="text/css" rel="stylesheet" href="css/styles.css">
 	<title>Newsportal</title>
 </head>
@@ -13,7 +14,7 @@
 			<span>Newsportal</span>
 		</a>
 		<nav class="nav-buttons">
-			<div class="authorize-section">
+			<div class="user-button">
 				Name
 			</div>
 		</nav>
@@ -22,8 +23,8 @@
 
 <div class="inside content">
 	<section class="news-grid">
-
 	</section>
+	<div id="pagination-button"></div>
 </div>
 <footer>
 	<div class="inside">
@@ -35,14 +36,16 @@
 		<div class="article-grid-item-inside">
 			<h3 class="article-grid-item-title"></h3>
 			<p class="article-grid-item-summary"></p>
+			<hr>
 			<div class="article-grid-item-footer">
-				<span class="article-grid-item-author"></span>
-				<span class="article-grid-item-date"></span>
+				Author: <span class="article-grid-item-author"></span><br>
+				Posted at: <span class="article-grid-item-date"></span>
 			</div>
 		</div>
 	</section>
 </template>
-
+<script type="text/javascript" src="js/array.js"></script>
+<script type="text/javascript" src="js/listeners.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>
