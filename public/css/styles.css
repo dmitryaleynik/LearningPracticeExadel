@@ -49,17 +49,30 @@ header {
 .nav-buttons {
 	float: right;
 }
-.user-button {
+#user-button {
 	padding: 60% 0;
 	font-family: 'Merriweather Sans', sans-serif;
 	font-weight: 300;
+	cursor: pointer;
 }
 .content {
 	width: 80%;
 	margin: 0 auto;
 }
 
+.authorized {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#add-new-article-button {
+	width: 180px;
+}
+
 .article-grid-item-inside {
+	position: relative;
 	background-color: #eaecf0;
 	margin: 10px;
 	padding: 5px;
@@ -69,6 +82,7 @@ header {
 .article-grid-item-title {
 	min-height: 100px;
 	font-family: 'Merriweather Sans', sans-serif;
+	cursor: pointer;
 }
 
 .article-grid-item-summary {
@@ -87,6 +101,26 @@ header {
 	font-weight: 300;
 	font-size: 15px;
 }
+.article-grid-item-footer span:nth-child(2) {
+	float: right;
+}
+
+.user-window {
+	z-index: 1;
+	position: absolute;
+	right: -100px;
+	top: 98px;
+	background-color: #c9c9c9;
+	width: 230px;
+	height: 120px;
+	align-content: center;
+}
+.user-window form {
+	padding: 30px 30px;
+}
+.user-window .buttons {
+	margin: 7px 1px;
+}
 
 #pagination-button {
 	width: 40px;
@@ -99,6 +133,45 @@ header {
 #pagination-button:hover {
 	background: url('../images/arrow_down_hovered.png') no-repeat;
 }
+
+.article-content {
+	position: relative;
+}
+.buttons {
+	width: 60px;
+	font-size: 22px;
+	font-family: 'Merriweather Sans', sans-serif;
+	font-weight: 300;
+	color: #323232;
+	background-color: #d2d4d8;
+	margin: 5px;
+	text-align: center;
+	border: .5px solid white;
+	cursor: pointer;
+}
+.full-content {
+	padding: 5px;
+}
+.buttons:hover {
+	color: #e5e5e5;
+	background-color: #eeeff3;
+}
+
+#back-button {
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+}
+
+label {
+	font-size: 16px;
+}
+
+.submit-button {
+	font-size: 18px;
+	width: 100px;
+}
+
 footer {
 	width: 100%;
 	font-size: 16px;
@@ -201,6 +274,9 @@ footer div {
 	.brand span {
 		margin-left: 35px;
 		top: 15%;
+	}
+	.article-grid-item-footer {
+		font-size: 14px;
 	}
 }
 

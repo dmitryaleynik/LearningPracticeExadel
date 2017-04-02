@@ -50,20 +50,33 @@ var pagination = (function () {
     }
 
     function hideShowMoreButton() {
-        SHOW_MORE_BUTTON.hidden = true;
+        return SHOW_MORE_BUTTON.hidden = true;
+    }
+
+    function showShowMoreButton() {
+        if (getTotalPages() > CURRENT_PAGE)
+            return SHOW_MORE_BUTTON.hidden = false;
     }
 
     return {
-        init: init
+        init: init,
+        showMoreButton: {
+            hide: hideShowMoreButton,
+            show: showShowMoreButton
+        }
     }
 }());
+
+
+
 
 var filter = (function() {
     var FILTER_SECTION;
     var NEWS_GRID;
+
     function init() {
-        NEWS_GRID = document.querySelector('#newsGrid');
-        FILTER_SECTION = document.querySelector("#filter-section");
+        NEWS_GRID = document.querySelector('.news-grid');
+        FILTER_SECTION = document.querySelector("#filter");
         FILTER_SECTION.addEventListener('change', handleFilterChange);
     }
 
@@ -78,43 +91,50 @@ var filter = (function() {
             pagination.init(articlesService.getMaxId(), renderArticles);
     }
 
+    function showFilterSection() {
+        return FILTER_SECTION.parentNode.parentNode.hidden = false;
+    }
+
+    function hideFilterSection() {
+        return FILTER_SECTION.parentNode.parentNode.hidden = true;
+    }
+
     return {
-        init: init
+        init: init,
+        filterSection: {
+            hide: hideFilterSection,
+            show: showFilterSection
+        }
     }
 }());
+
+
+
+
 
 var showFullArticle = (function () {
     var TEMPLATE_ARTICLE_CONTENT;
     var NEWS_GRID;
     var BACK_BUTTON;
     var CURRENT_ARTICLE;
-    var REMOVED_ARTICLE;
 
     function init() {
         editCurrentArticle.init();
-        NEWS_GRID = document.querySelector('#newsGrid');
+        NEWS_GRID = document.querySelector('.news-grid');
         TEMPLATE_ARTICLE_CONTENT = document.querySelector('#template-article-content');
         NEWS_GRID.addEventListener('click', handleShowContentClick);
-        NEWS_GRID.addEventListener('click', handleRemoveClick);
-    }
-
-    function handleRemoveClick(event) {
-        if (!event.target.matches('.remove'))
-            return;
-        REMOVED_ARTICLE = event.target.parentNode;
-        removeArticle(REMOVED_ARTICLE.dataset.id);
-        NEWS_GRID.innerHTML = "";
-        pagination.init(articlesService.getLength(), renderArticles);
     }
 
     function handleShowContentClick(event) {
-        if (event.target.tagName != 'H3')
+        if (event.target.tagName !== 'H3')
             return;
-        CURRENT_ARTICLE = event.target.parentNode;
+        pagination.showMoreButton.hide();
+        filter.filterSection.hide();
+        CURRENT_ARTICLE = event.target.parentNode.parentNode;
         NEWS_GRID.innerHTML = "";
         NEWS_GRID.appendChild(renderContent(CURRENT_ARTICLE));
-        BACK_BUTTON = document.querySelector('#back-to-grid');
-        editCurrentArticle.EDIT_BUTTON = document.querySelector('#edit');
+        BACK_BUTTON = document.querySelector('#back-button');
+        editCurrentArticle.EDIT_BUTTON = document.querySelector('#edit-button');
         editCurrentArticle.EDIT_BUTTON.addEventListener('click', editCurrentArticle.handleEditArticle);
         BACK_BUTTON.addEventListener('click', handleBackClick);
     }
@@ -122,14 +142,18 @@ var showFullArticle = (function () {
     function renderContent(article) {
         var temp = TEMPLATE_ARTICLE_CONTENT;
         var articleContent = articlesService.getArticle(article.dataset.id).content;
-        temp.content.querySelector('#inner-content').textContent = articleContent;
+        temp.content.querySelector('.full-content').textContent = articleContent;
         return temp.content.querySelector('.article-content').cloneNode(true);
     }
 
     function handleBackClick() {
         NEWS_GRID.innerHTML = "";
         articleRenderer.insertArticlesInDOM(shownArticles);
+        pagination.showMoreButton.show();
+        filter.filterSection.show();
     }
+
+
 
     var editCurrentArticle = (function(){
         var TEMPLATE_EDIT_ARTICLE;
@@ -141,7 +165,7 @@ var showFullArticle = (function () {
         function handleEditArticle() {
             NEWS_GRID.innerHTML = "";
             NEWS_GRID.appendChild(TEMPLATE_EDIT_ARTICLE.content.querySelector('.edit-article').cloneNode(true));
-            var submit = document.querySelector('.submit');
+            var submit = document.querySelector('.edit');
             submit.addEventListener('click', handleSubmitEditing);
         }
 
@@ -154,6 +178,8 @@ var showFullArticle = (function () {
             editArticle(CURRENT_ARTICLE.dataset.id, article);
             NEWS_GRID.innerHTML = "";
             articleRenderer.insertArticlesInDOM(shownArticles);
+            pagination.showMoreButton.show();
+            filter.filterSection.show();
         }
 
         return {
@@ -162,10 +188,16 @@ var showFullArticle = (function () {
         }
     }());
 
+
+
     return {
         init: init
     }
 }());
+
+
+
+
 
 var newArticle = (function () {
     var NEWS_GRID;
@@ -173,16 +205,19 @@ var newArticle = (function () {
     var ADD_BUTTON;
 
     function init() {
-        NEWS_GRID = document.querySelector('#newsGrid');
+        NEWS_GRID = document.querySelector('.news-grid');
         TEMPLATE_NEW_ARTICLE = document.querySelector('#template-new-article');
-        ADD_BUTTON = document.querySelector('#add');
+        ADD_BUTTON = document.querySelector('#add-new-article-button');
         ADD_BUTTON.addEventListener('click', handleAddNewArticle);
     }
 
     function handleAddNewArticle() {
+        authorize.hideUserForm();
+        pagination.showMoreButton.hide();
+        filter.filterSection.hide();
         NEWS_GRID.innerHTML = "";
         NEWS_GRID.appendChild(TEMPLATE_NEW_ARTICLE.content.querySelector('.new-article').cloneNode(true));
-        var submit = document.querySelector('.submit');
+        var submit = document.querySelector('.add');
         submit.addEventListener('click', handleSubmitAdding);
     }
 
@@ -201,6 +236,8 @@ var newArticle = (function () {
         NEWS_GRID.innerHTML = "";
         articleRenderer.insertArticlesInDOM(shownArticles);
         articleRenderer.renderFilter(shownArticles);
+        pagination.showMoreButton.show();
+        filter.filterSection.show();
     }
 
     return {
@@ -209,61 +246,95 @@ var newArticle = (function () {
 
 }());
 
-var authorize = (function(){
-    var AUTHORIZE_BUTTON;
-    var AUTHORIZE_WINDOW;
-    var AUTHORIZE_FORM;
-    var LOGIN_BUTTON;
-    var LOGOUT_BUTTON;
+
+
+
+var remove = (function(){
+    let NEWS_GRID;
+    let REMOVED_ARTICLE;
 
     function init() {
-        AUTHORIZE_BUTTON = document.querySelector('#authorize');
-        AUTHORIZE_WINDOW = document.querySelector('.authorize-form');
-        LOGIN_BUTTON = document.querySelector('#login');
-        LOGOUT_BUTTON = document.querySelector('#logout');
-        AUTHORIZE_FORM = document.forms['authorize'];
-        AUTHORIZE_WINDOW.hidden = true;
-        if (localStorage.getItem('user')) {
-            articleRenderer.renderUser(localStorage.getItem('user'));
-            AUTHORIZE_FORM.hidden = true;
-        }
-        else
-            LOGOUT_BUTTON.hidden = true;
-        AUTHORIZE_BUTTON.addEventListener('click', handleAuthorizeFormShowing);
-        LOGIN_BUTTON.addEventListener('click', handleSubmitLoggingIn);
-        LOGOUT_BUTTON.addEventListener('click', handleLogout);
+        NEWS_GRID = document.querySelector('.news-grid');
+        NEWS_GRID.addEventListener('click', handleRemoveArticle)
     }
 
-    function handleAuthorizeFormShowing() {
-        if (AUTHORIZE_WINDOW.hidden) {
-            AUTHORIZE_WINDOW.hidden = false;
-        } else {
-            AUTHORIZE_WINDOW.hidden = true;
-        }
-    }
-
-    function handleSubmitLoggingIn() {
-        var user = AUTHORIZE_FORM.elements[0].value;
-        if (user) {
-            localStorage.setItem('user', user);
-            articleRenderer.renderUser(user);
-            AUTHORIZE_WINDOW.hidden = true;
-            AUTHORIZE_FORM.hidden = true;
-            LOGOUT_BUTTON.hidden = false;
-        }
-    }
-
-    function handleLogout() {
-        var user = "";
-        localStorage.removeItem('user');
-        articleRenderer.renderUser('name');
-        LOGOUT_BUTTON.hidden = true;
-        AUTHORIZE_WINDOW.hidden = true;
-        AUTHORIZE_FORM.hidden = false;
+    function handleRemoveArticle(event) {
+        if (!event.target.matches('#remove-button'))
+            return;
+        REMOVED_ARTICLE = event.target.parentNode.parentNode;
+        removeArticle(REMOVED_ARTICLE.dataset.id);
+        NEWS_GRID.innerHTML = "";
+        articleRenderer.insertArticlesInDOM(shownArticles);
     }
 
     return {
         init: init
+    }
+}());
+
+
+
+
+var authorize = (function(){
+    var USER_BUTTON;
+    var USER_WINDOW;
+    var AUTHORIZE_FORM;
+    var LOGIN_BUTTON;
+    var LOGOUT_BUTTON;
+    let AUTHORIZED_WINDOW;
+
+    function init() {
+        USER_BUTTON = document.querySelector('#user-button');
+        USER_WINDOW = document.querySelector('.user-window');
+        LOGIN_BUTTON = document.querySelector('.login');
+        LOGOUT_BUTTON = document.querySelector('.logout');
+        AUTHORIZED_WINDOW = document.querySelector('.authorized');
+        AUTHORIZE_FORM = document.forms['authorize-form'];
+        USER_WINDOW.hidden = true;
+        if (localStorage.getItem('user')) {
+            articleRenderer.renderUser(localStorage.getItem('user'));
+            AUTHORIZE_FORM.hidden = true;
+        }
+        else {
+            LOGOUT_BUTTON.hidden = true;
+            document.querySelector('#add-new-article-button').hidden = true;
+        }
+        USER_BUTTON.addEventListener('click', handleAuthorizeFormShowing);
+        LOGIN_BUTTON.addEventListener('click', handleLogIn);
+        LOGOUT_BUTTON.addEventListener('click', handleLogOut);
+    }
+
+    function handleAuthorizeFormShowing() {
+        if (USER_WINDOW.hidden) {
+            return USER_WINDOW.hidden = false;
+        } else {
+            return USER_WINDOW.hidden = true;
+        }
+    }
+
+    function handleLogIn() {
+        var user = AUTHORIZE_FORM.elements[0].value;
+        if (user) {
+            localStorage.setItem('user', user);
+            articleRenderer.renderUser(user);
+            USER_WINDOW.hidden = true;
+            AUTHORIZE_FORM.hidden = true;
+            AUTHORIZED_WINDOW.hidden = false;
+        }
+    }
+
+    function handleLogOut() {
+        localStorage.removeItem('user');
+        articleRenderer.renderUser('Name');
+        LOGOUT_BUTTON.hidden = true;
+        document.querySelector('#add-new-article-button').hidden = true;
+        USER_WINDOW.hidden = true;
+        AUTHORIZE_FORM.hidden = false;
+    }
+
+    return {
+        init: init,
+        hideUserForm: handleAuthorizeFormShowing
     }
 
 }());
@@ -276,7 +347,7 @@ function startApp () {
     pagination.init(articlesService.getLength(), renderArticles);
     showFullArticle.init();
     newArticle.init();
-    showFullArticle.init();
+    remove.init();
     filter.init();
     authorize.init();
 }
