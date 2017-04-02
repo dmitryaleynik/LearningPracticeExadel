@@ -1,55 +1,53 @@
 document.addEventListener('DOMContentLoaded', startApp);
 
-var shownArticles = [];
-var currentPaginationArticles = [];
+let shownArticles = [];
+let currentPaginationArticles = [];
 
 function startApp() {
-    articleRenderer.init();
-    articleRenderer.renderFilter(JSON.parse(localStorage.getItem('articles')));
+    window.DOMService.init();
+    DOMService.renderFilter(articleService.getArticlesFromDb());
 }
 
 function renderArticles(skip, top, obj) {
-    currentPaginationArticles = articlesService.getArticles(skip, top, obj);
+    currentPaginationArticles = articleService.getArticles(skip, top, obj);
     currentPaginationArticles.forEach(function (item) {
         shownArticles.push(item);
     });
-    articleRenderer.insertArticlesInDOM(currentPaginationArticles);
+    DOMService.insertArticlesInDOM(currentPaginationArticles);
 }
 
 function addArticle (article) {
-    if (articlesService.addArticle(article)) {
+    if (articleService.addArticle(article)) {
         shownArticles.push(article);
-        articlesService.sortByDate(shownArticles);
-        articleRenderer.removeArticlesFromDOM();
-        articleRenderer.insertArticlesInDOM(shownArticles);
+        articleService.sortByDate(shownArticles);
+        DOMService.removeArticlesFromDOM();
+        DOMService.insertArticlesInDOM(shownArticles);
     }
 }
 
 function removeArticle(id) {
-    if (articlesService.removeArticle(id)) {
-        var temp = shownArticles.find(function (elem) {
-            return elem.id == id;
+    if (articleService.removeArticle(id)) {
+        let temp = shownArticles.find((elem) => {
+            return elem.id === id;
         });
         if (temp) {
             shownArticles.splice(shownArticles.indexOf(temp), 1);
-            articleRenderer.removeArticlesFromDOM();
-            articleRenderer.insertArticlesInDOM(shownArticles);
+            DOMService.removeArticlesFromDOM();
+            DOMService.insertArticlesInDOM(shownArticles);
         }
     }
 }
 
 function editArticle(id, obj) {
-    if (articlesService.editArticle(id, obj)) {
-        var newArticle = articlesService.getArticle(id);
-        var oldArticle = shownArticles.find(function(item){
-            return item.id == id;
-        });
+    if (articleService.editArticle(id, obj)) {
+        let newArticle = articlesService.getArticle(id);
+        let oldArticle = shownArticles.find((item) => { return item.id === id; });
         if (oldArticle) {
             shownArticles.splice(shownArticles.indexOf(oldArticle), 1);
             shownArticles.push(newArticle);
-            articlesService.sortByDate(shownArticles);
-            articleRenderer.removeArticlesFromDOM();
-            articleRenderer.insertArticlesInDOM(shownArticles);
+            articleService.sortByDate(shownArticles);
+            DOMService.removeArticlesFromDOM();
+            DOMService.insertArticlesInDOM(shownArticles);
         }
     }
 }
