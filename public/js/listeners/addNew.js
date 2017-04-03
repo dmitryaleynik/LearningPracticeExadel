@@ -26,7 +26,7 @@
     function handleSubmitAdding () {
         let form = document.forms['new-article-form'];
         let article = {};
-        article.id = articleService.getMaxId() + 1;
+        article.id = (articleService.getMaxId() + 1).toString();
         article.title = form.elements['title'].value;
         article.summary = form.elements['summary'].value;
         article.createdAt = new Date(form.elements['date'].value);

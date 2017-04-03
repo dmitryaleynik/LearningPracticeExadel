@@ -43,8 +43,9 @@
 
     function handleLogIn() {
         let curUser = AUTHORIZE_FORM.elements[0].value;
+        let password = AUTHORIZE_FORM.elements[1].value;
         if (user) {
-            user.login({user:curUser});
+            user.login({user: curUser, password: password});
             DOMService.renderUser(curUser);
             USER_WINDOW.hidden = true;
             AUTHORIZE_FORM.hidden = true;
@@ -70,7 +71,7 @@
 
     user.logout = () => {
         let xhr = new XMLHttpRequest();
-        xhr.open('DELETE', '/loout');
+        xhr.open('DELETE', '/logout');
         xhr.setRequestHeader('content-type', 'application/json');
         xhr.send();
     };
@@ -80,8 +81,8 @@
         let xhr = new XMLHttpRequest();
         xhr.open('GET', '/curUser', false);
         xhr.send();
-
-        return (xhr.responseText)[0];
+        let temp = JSON.parse(xhr.responseText)[0];
+        return temp ? temp.user : false;
     };
 
 

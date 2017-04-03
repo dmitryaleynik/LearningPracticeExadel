@@ -9,15 +9,15 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-db.connect('./', ['articles', 'curUser']);
+db.connect('./data/', ['articles', 'curUser', 'users']);
 
 
 app.get('/articles', (req, res) => {
-   res.send(JSON.stringify(db.articles.find()));
+   res.send(db.articles.find());
 });
 
 app.get('/curUser', (rq, res) => {
-   res.send(JSON.stringify(db.curUser.find()));
+   res.send(db.curUser.find());
 });
 
 
@@ -29,9 +29,13 @@ app.post('/articles', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-    db.curUser.save(req.body);
+    let tempUser = req.body;
+    tempUser = db.users.find({user: tempUser.user, password: tempUser.password});
+    if (!tempUser) res.status(400).send('Wrong username or password.');
+        db.curUser.save(req.body);
     res.json(req.body);
 });
+
 
 app.delete('/logout', (req, res) => {
     db.curUser.remove();

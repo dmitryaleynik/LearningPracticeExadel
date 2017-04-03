@@ -89,3 +89,9 @@
 
     window.DOMService = DOMService;
 }(window.articleService);
+
+
+function startApp() {
+    window.DOMService.init();
+    DOMService.renderFilter(articleService.getArticlesFromDb());
+}

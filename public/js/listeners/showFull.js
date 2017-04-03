@@ -8,7 +8,6 @@
     let CURRENT_ARTICLE;
 
     showFull.init = () => {
-        edit.init();
         NEWS_GRID = document.querySelector('.news-grid');
         TEMPLATE_ARTICLE_CONTENT = document.querySelector('#template-article-content');
         NEWS_GRID.addEventListener('click', handleShowContentClick);
@@ -20,6 +19,7 @@
         pagination.showHide.hide();
         filter.showHide.hide();
         CURRENT_ARTICLE = event.target.parentNode.parentNode;
+        edit.init(CURRENT_ARTICLE);
         NEWS_GRID.innerHTML = "";
         NEWS_GRID.appendChild(renderContent(CURRENT_ARTICLE));
         BACK_BUTTON = document.querySelector('#back-button');

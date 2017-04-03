@@ -106,9 +106,7 @@
             articles = articleService.getArticlesFromDb();
             if (!articleService.validateArticle(article, true))
                 return false;
-            if(articles.find(function (item) {
-                    return item.id === article.id;
-                }))
+            if(articles.find( (item) => { return item.id === article.id; }))
                 return false;
             articles.push(article);
             articleService.setArticlesToDb();

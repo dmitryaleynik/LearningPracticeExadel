@@ -1,4 +1,4 @@
-;!function (DOMService){
+;!function (articleService, DOMService){
 
     let remove = {};
 
@@ -15,9 +15,10 @@
             return;
         REMOVED_ARTICLE = event.target.parentNode.parentNode;
         removeArticle(REMOVED_ARTICLE.dataset.id);
+        DOMService.renderFilter(articleService.getArticlesFromDb());
         NEWS_GRID.innerHTML = "";
         DOMService.insertArticlesInDOM(shownArticles);
     }
 
     window.remove = remove;
-}(window.DOMService);
+}(window.articleService, window.DOMService);

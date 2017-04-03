@@ -3,10 +3,6 @@ document.addEventListener('DOMContentLoaded', startApp);
 let shownArticles = [];
 let currentPaginationArticles = [];
 
-function startApp() {
-    window.DOMService.init();
-    DOMService.renderFilter(articleService.getArticlesFromDb());
-}
 
 function renderArticles(skip, top, obj) {
     currentPaginationArticles = articleService.getArticles(skip, top, obj);

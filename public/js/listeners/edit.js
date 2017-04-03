@@ -1,10 +1,14 @@
-;!function(DOMService, pagination, filter) {
+;!function(DOMService, pagination, filter, showFull) {
 
     let edit = {};
 
+    let NEWS_GRID;
     let TEMPLATE_EDIT_ARTICLE;
+    let CURRENT_ARTICLE;
 
-    edit.init = () => {
+    edit.init = (curArticle) => {
+        CURRENT_ARTICLE = curArticle;
+        NEWS_GRID = document.querySelector('.news-grid');
         TEMPLATE_EDIT_ARTICLE = document.querySelector('#template-edit-article');
     };
 
@@ -29,4 +33,4 @@
     }
 
     window.edit = edit;
-}(window.DOMService, window.pagination, window.filter);
+}(window.DOMService, window.pagination, window.filter, window.showFull);
