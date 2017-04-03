@@ -90,8 +90,9 @@
     window.DOMService = DOMService;
 }(window.articleService);
 
+document.addEventListener('DOMContentLoaded', startApp);
 
 function startApp() {
-    window.DOMService.init();
+    DOMService.init();
     DOMService.renderFilter(articleService.getArticlesFromDb());
 }

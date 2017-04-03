@@ -29,11 +29,14 @@ app.post('/articles', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-    let tempUser = req.body;
-    tempUser = db.users.find({user: tempUser.user, password: tempUser.password});
-    if (!tempUser) res.status(400).send('Wrong username or password.');
-        db.curUser.save(req.body);
-    res.json(req.body);
+    let reqUser = req.body;
+    let users = db.users.find();
+    let user = users.find(user => user.name === reqUser.name && user.password === reqUser.password);
+    if (!user) res.status(400).send('Wrong password or userName');
+    else {
+        db.curUser.save(user);
+        res.json(reqUser);
+    }
 });
 
 
