@@ -1,10 +1,10 @@
 !function () {
 	'use strict';
 
-	let pagination = {};
+	const pagination = {};
 
 	let TOTAL;
-	let PER_PAGE = 3;
+	const PER_PAGE = 3;
 	let CURRENT_PAGE;
 	let SHOW_MORE_BUTTON;
 	let FILTER;
@@ -27,27 +27,27 @@
 		return getParams();
 	};
 
-	function handleShowMoreClick() {
-		let paginationParams = nextPage();
+	const handleShowMoreClick = () => {
+		const paginationParams = nextPage();
 		SHOW_MORE_CALLBACK(paginationParams.skip, paginationParams.top, FILTER);
-	}
+	};
 
-	function getTotalPages() {
+	const getTotalPages = () => {
 		return Math.ceil(TOTAL / PER_PAGE);
-	}
+	};
 
-	function nextPage() {
+	const nextPage = () => {
 		CURRENT_PAGE++;
 		if (getTotalPages() <= CURRENT_PAGE) pagination.showHide.hide();
 		return getParams();
-	}
+	};
 
-	function getParams() {
+	const getParams = () => {
 		return {
 			top: PER_PAGE,
 			skip: (CURRENT_PAGE - 1) * PER_PAGE
 		};
-	}
+	};
 
 	pagination.showHide = {};
 

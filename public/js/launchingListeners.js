@@ -3,9 +3,10 @@
 
 document.addEventListener('DOMContentLoaded', startApp);
 
-function startApp () {
-
-	pagination.init(articleService.getLength(), servicesInteraction.renderArticles);
+function startApp() {
+	articleService.getLength().then (length => {
+		pagination.init(length, servicesInteraction.renderArticles);
+	});
 	showFull.init();
 	user.init();
 	addNew.init();

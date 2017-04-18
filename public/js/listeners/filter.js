@@ -1,7 +1,7 @@
 !function(servicesInteraction, articleService, pagination) {
 	'use strict';
 
-	let filter = {};
+	const filter = {};
 
 	let FILTER_SECTION;
 	let NEWS_GRID;
@@ -12,8 +12,8 @@
 		FILTER_SECTION.addEventListener('change', handleFilterChange);
 	};
 
-	function handleFilterChange() {
-		let filt = FILTER_SECTION.value;
+	const handleFilterChange = () => {
+		const filt = FILTER_SECTION.value;
 		NEWS_GRID.innerHTML = '';
 		servicesInteraction.shownArticles = [];
 		if (filt)
@@ -21,7 +21,7 @@
                 servicesInteraction.renderArticles, {author: filt});
 		else
             pagination.init(articleService.getMaxId(), servicesInteraction.renderArticles);
-	}
+	};
 
 	filter.showHide = {};
 

@@ -1,7 +1,7 @@
 !function(DOMService, remove){
 	'use strict';
 
-	let user = {};
+	const user = {};
 
 	let USER_BUTTON;
 	let USER_WINDOW;
@@ -18,7 +18,7 @@
 		AUTHORIZED_WINDOW = document.querySelector('.authorized');
 		AUTHORIZE_FORM = document.forms['authorize-form'];
 		USER_WINDOW.hidden = true;
-		let temp = user.getCurrentUser();
+		const temp = user.getCurrentUser();
 		if (temp) {
 			DOMService.renderUser(temp);
 			AUTHORIZE_FORM.hidden = true;
@@ -32,29 +32,29 @@
 		LOGOUT_BUTTON.addEventListener('click', handleLogOut);
 	};
 
-	function handleAuthorizeFormShowing() {
+	const handleAuthorizeFormShowing = () => {
 		if (USER_WINDOW.hidden) {
 			return USER_WINDOW.hidden = false;
 		} else {
 			return USER_WINDOW.hidden = true;
 		}
-	}
+	};
 
 	user.hideUserForm = handleAuthorizeFormShowing;
 
-	function handleLogIn() {
-		let curUser = AUTHORIZE_FORM.elements[0].value;
-		let password = AUTHORIZE_FORM.elements[1].value;
-		if (user.login({user: curUser, password: password})) {
+	const handleLogIn = () => {
+		const curUser = AUTHORIZE_FORM.elements[0].value;
+		const password = AUTHORIZE_FORM.elements[1].value;
+		if (user.login({user: curUser, password})) {
 			DOMService.renderUser(curUser);
 			USER_WINDOW.hidden = true;
 			AUTHORIZE_FORM.hidden = true;
 			AUTHORIZED_WINDOW.hidden = false;
 			remove.showHide.show();
 		}
-	}
+	};
 
-	function handleLogOut() {
+	const handleLogOut = () => {
 		user.logout();
 		DOMService.renderUser('Sign In');
 		LOGOUT_BUTTON.hidden = true;
@@ -62,10 +62,10 @@
 		USER_WINDOW.hidden = true;
 		AUTHORIZE_FORM.hidden = false;
 		remove.showHide.hide();
-	}
+	};
 
 	user.login = (curUser) => {
-		let xhr = new XMLHttpRequest();
+		const xhr = new XMLHttpRequest();
 		xhr.open('POST', '/login');
 		xhr.setRequestHeader('content-type', 'application/json');
 		xhr.send(JSON.stringify(curUser));
@@ -73,18 +73,17 @@
 	};
 
 	user.logout = () => {
-		let xhr = new XMLHttpRequest();
+		const xhr = new XMLHttpRequest();
 		xhr.open('DELETE', '/logout');
 		xhr.setRequestHeader('content-type', 'application/json');
 		xhr.send();
 	};
 
 	user.getCurrentUser = () => {
-		'use strict';
-		let xhr = new XMLHttpRequest();
+		const xhr = new XMLHttpRequest();
 		xhr.open('GET', '/curUser', false);
 		xhr.send();
-		let temp = JSON.parse(xhr.responseText)[0];
+		const temp = JSON.parse(xhr.responseText)[0];
 		return temp ? temp.user : false;
 	};
 

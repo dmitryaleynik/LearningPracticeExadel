@@ -1,7 +1,7 @@
 !function (servicesInteraction, articleService, DOMService, pagination, filter, user) {
 	'use strict';
 
-	let addNew = {};
+	const addNew = {};
 
 	let NEWS_GRID;
 	let TEMPLATE_NEW_ARTICLE;
@@ -14,34 +14,37 @@
 		ADD_BUTTON.addEventListener('click', handleAddNewArticle);
 	};
 
-	function handleAddNewArticle() {
+	const handleAddNewArticle = () => {
 		user.hideUserForm();
 		pagination.showHide.hide();
 		filter.showHide.hide();
 		NEWS_GRID.innerHTML = '';
 		NEWS_GRID.appendChild(TEMPLATE_NEW_ARTICLE.content.querySelector('.new-article').cloneNode(true));
-		let submit = document.querySelector('.add');
+		const submit = document.querySelector('.add');
 		submit.addEventListener('click', handleSubmitAdding);
-	}
+	};
 
-	function handleSubmitAdding () {
-		let form = document.forms['new-article-form'];
-		let article = {};
-		article.id = (articleService.getMaxId() + 1).toString();
-		article.title = form.elements['title'].value;
-		article.summary = form.elements['summary'].value;
-		article.createdAt = new Date(form.elements['date'].value);
-		article.author = user.getCurrentUser();
-		article.content = form.elements['content'].value;
+	const handleSubmitAdding = () => {
+		const form = document.forms['new-article-form'];
+		const article = {};
+		articleService.getMaxId().then (maxId => {
 
-		servicesInteraction.addArticle(article);
+			article.id = (maxId + 1).toString();
+			article.title = form.elements['title'].value;
+			article.summary = form.elements['summary'].value;
+			article.createdAt = new Date(form.elements['date'].value);
+			article.author = user.getCurrentUser();
+			article.content = form.elements['content'].value;
 
-		NEWS_GRID.innerHTML = '';
-		DOMService.insertArticlesInDOM(servicesInteraction.shownArticles);
-		DOMService.renderFilter(servicesInteraction.shownArticles);
-		pagination.showHide.show();
-		filter.showHide.show();
-	}
+			servicesInteraction.addArticle(article);
+
+			NEWS_GRID.innerHTML = '';
+			DOMService.insertArticlesInDOM(servicesInteraction.shownArticles);
+			DOMService.renderFilter(servicesInteraction.shownArticles);
+			pagination.showHide.show();
+			filter.showHide.show();
+		})
+	};
 
 	window.addNew = addNew;
 }(window.servicesInteraction, window.articleService, window.DOMService, window.pagination, window.filter, window.user);

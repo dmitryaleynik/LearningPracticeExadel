@@ -1,7 +1,7 @@
 !function() {
 	'use strict';
 
-	let DOMService = {};
+	const DOMService = {};
 
 	let ARTICLE_TEMPLATE;
 	let ARTICLE_LIST_NODE;
@@ -19,36 +19,36 @@
 	};
 
 	DOMService.insertArticlesInDOM = (articles) => {
-		let articlesNodes = renderArticles(articles);
+		const articlesNodes = renderArticles(articles);
 		articlesNodes.forEach(function (node) {
 			ARTICLE_LIST_NODE.appendChild(node);
 		});
 	};
 
-	function renderArticles(articles) {
+	const renderArticles = (articles) => {
 		return articles.map(function (article) {
 			return renderArticle(article);
 		});
-	}
+	};
 
-	function renderArticle (article) {
-		let template = ARTICLE_TEMPLATE;
+	const renderArticle = (article) => {
+		const template = ARTICLE_TEMPLATE;
 		template.content.querySelector('.article-grid-item').dataset.id = article.id;
 		template.content.querySelector('.article-grid-item-title').textContent = article.title;
 		template.content.querySelector('.article-grid-item-summary').textContent = article.summary;
 		template.content.querySelector('.article-grid-item-author').textContent = article.author;
 		template.content.querySelector('.article-grid-item-date').textContent = formatDate(article.createdAt);
 		return template.content.querySelector('.article-grid-item').cloneNode(true);
-	}
+	};
 
-	function formatDate(d) {
+	const formatDate = (d) => {
 		let hours = d.getHours();
-		if(+hours <= 9) hours = '0' + hours;
+		if(+hours <= 9) hours = `0${hours}`;
 		let minutes = d.getMinutes();
-		if (+minutes <= 9) minutes = '0' + minutes;
-		return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' +
-                hours + ':' + minutes;
-	}
+		if (+minutes <= 9) minutes = `0${minutes}`;
+		return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} ${ 
+                hours}:${minutes}`;
+	};
 
 	DOMService.renderUser = (user) => {
 		USER_BUTTON.textContent = user;
@@ -59,32 +59,32 @@
 		ARTICLE_LIST_NODE.innerHTML = '';
 	};
 
-	DOMService.renderFilter = (articles) => {
-		FILTER_SECTION.innerHTML = '';
-		let set = new Set(articles.map(function(item) {
-			return item.author;
-		}));
-		let filterItems = renderFilterItems(set);
-		filterItems.forEach(function(item) {
-			FILTER_SECTION.appendChild(item);
-		});
+	DOMService.renderFilter = articles => {
+			FILTER_SECTION.innerHTML = '';
+			const set = new Set(articles.map(function(item) {
+				return item.author;
+			}));
+			const filterItems = renderFilterItems(set);
+			filterItems.forEach(function(item) {
+				FILTER_SECTION.appendChild(item);
+			});
 	};
 
-	function renderFilterItems(set) {
-		let tSet = [];
+	const renderFilterItems = (set) => {
+		const tSet = Array.from(set);
 		tSet.push('');
 		set.forEach(function(item){
 			tSet.push(item);
 		});
 		return tSet.map((item) => {
-			let temp = FILTER_TEMPLATE;
+			const temp = FILTER_TEMPLATE;
 			temp.content.querySelector('#filter-item').setAttribute('value', item);
 			temp.content.querySelector('#filter-item').textContent = item;
 			if (!item)
 				temp.content.querySelector('#filter-item').selected = true;
 			return temp.content.querySelector('#filter-item').cloneNode(true);
 		});
-	}
+	};
 
 	window.DOMService = DOMService;
 }();

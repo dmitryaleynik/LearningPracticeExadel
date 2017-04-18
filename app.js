@@ -1,9 +1,9 @@
 'use strict';
-let express = require('express');
-let app = express();
-let path = require('path');
-let bodyParser = require('body-parser');
-let db = require('diskdb');
+const express = require('express');
+const app = express();
+const path = require('path');
+const bodyParser = require('body-parser');
+const db = require('diskdb');
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
@@ -29,9 +29,9 @@ app.post('/articles', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-	let reqUser = req.body;
-	let users = db.users.find();
-	let user = users.find(user => user.name === reqUser.name && user.password === reqUser.password);
+	const reqUser = req.body;
+	const users = db.users.find();
+	const user = users.find(user => user.name === reqUser.name && user.password === reqUser.password);
 	if (!user) res.status(400).send('Wrong password or userName');
 	else {
 		db.curUser.save(user);

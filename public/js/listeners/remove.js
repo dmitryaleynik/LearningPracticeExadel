@@ -1,7 +1,7 @@
 !function (servicesInteraction, articleService, DOMService){
 	'use strict';
 
-	let remove = {};
+	const remove = {};
 
 	let NEWS_GRID;
 	let REMOVED_ARTICLE;
@@ -13,30 +13,31 @@
 		NEWS_GRID.addEventListener('click', handleRemoveArticle);
 	};
 
-	function handleRemoveArticle(event) {
+	const handleRemoveArticle = (event) => {
 		if (!event.target.matches('#remove-button'))
 			return;
 		REMOVED_ARTICLE = event.target.parentNode.parentNode;
-		servicesInteraction.removeArticle(REMOVED_ARTICLE.dataset.id);
-		DOMService.renderFilter(articleService.getArticlesFromDb());
-		NEWS_GRID.innerHTML = '';
-		DOMService.insertArticlesInDOM(servicesInteraction.shownArticles);
-	}
+		servicesInteraction.removeArticle(REMOVED_ARTICLE.dataset.id).then (articles => {
+			DOMService.renderFilter(articles);
+			NEWS_GRID.innerHTML = '';
+			DOMService.insertArticlesInDOM(servicesInteraction.shownArticles);
+		});
+	};
 
 	remove.showHide = {};
 
 	remove.showHide.hide = () => {
-		let buttons = NEWS_GRID.querySelectorAll('#remove-button');
+		const buttons = NEWS_GRID.querySelectorAll('#remove-button');
 		return buttons.forEach((item) => {
 			item.hidden = true;
-        });
+		});
 	};
 
 	remove.showHide.show = () => {
-        let buttons = NEWS_GRID.querySelectorAll('#remove-button');
-        return buttons.forEach((item) => {
-            item.hidden = false;
-        });
+		const buttons = NEWS_GRID.querySelectorAll('#remove-button');
+		return buttons.forEach((item) => {
+			item.hidden = false;
+		});
 	};
 
 	window.remove = remove;

@@ -3,70 +3,69 @@
 
 	articles = articles || [];
 
-	let articleService = {};
+	const articleService = {};
 
 
 	articleService.getLength = () => {
-		articles = articleService.getArticlesFromDb();
-		return articles.length;
+		return articleService.getArticlesFromDb().then (articles => {
+			return articles.length;
+		});
 	};
 
 	articleService.getMaxId = () => {
-		articles = articleService.getArticlesFromDb();
-		let m = 0;
-		articles.forEach(function (item) {
-			return m < +item.id ? m = +item.id : false;
+		return articleService.getArticlesFromDb().then (articles => {
+			let maxId = 0;
+			articles.forEach(item => {
+				return item.id > maxId ? maxId = item.id : false;
+			});
+			return Number(maxId);
 		});
-		return m;
 	};
 
-	function compareArticles(a, b) {
+	articleService.compareArticles = (a, b) => {
 		return (a.createdAt < b.createdAt) ? 1 : -1;
-	}
+	};
 
-	articleService.sortByDate = (articles) => {
-		return articles.sort(compareArticles);
+	const sortByDate = (articles) => {
+		return articles.sort(articleService.compareArticles);
 	};
 
 	articleService.getArticles = (skip, top, obj) => {
-		articles = articleService.getArticlesFromDb();
-		articles.forEach(function(item) {
-			item.createdAt = new Date(item.createdAt);
-		});
-		let subarticles = [];
-		if (obj)
-			subarticles = articles.filter(function(item){
-				return item.author === obj.author;
-			});
-		else
-                subarticles = articles.slice(0, articles.length);
-		let sskip = skip||0;
-		let ttop = top||9;
-		let sortedSubarticles = articleService.sortByDate(subarticles);
-		sortedSubarticles = sortedSubarticles.slice(sskip, sskip+ttop);
-		return sortedSubarticles;
+		let promise = articleService.getArticlesFromDb().then(articles => {
+			let subarticles = [];
+			if (obj)
+				subarticles = articles.filter(function(item){
+					return item.author === obj.author;
+				});
+			else
+					subarticles = articles.slice(0, articles.length);
+			const sskip = skip||0;
+			const ttop = top||9;
+			let sortedSubarticles = sortByDate(subarticles);
+			sortedSubarticles = sortedSubarticles.slice(sskip, sskip+ttop);
+			return sortedSubarticles;
+        });
+		return promise;
 	};
 
-	articleService.getArticle = (id) => {
-		articles = articleService.getArticlesFromDb();
-		articles.forEach(function(item) {
-			item.createdAt = new Date(item.createdAt);
+	articleService.getArticle = id => {
+		return articleService.getArticlesFromDb().then(articles => {
+			if (isNaN(Number(id))) {
+				return false;
+			}
+			let temp = articles.find(function(item){
+				return item.id === id;
+			});
+			if(temp)
+				return temp;
 		});
-		if (isNaN(+id)) {
-			return false;
-		}
-		let temp = articles.find(function(item){
-			return item.id === id;
-		});
-		if(temp)
-			return temp;
 	};
 
 	articleService.validateArticle = (article, mode) => {
 		if (mode) {
 			if (Object.keys(article).length !== 6)
 				return false;
-			let a = Number(article.id);
+			const a = Number(article.id);
 			if (isNaN(a))
 				return false;
 			if (typeof article.title !== 'string' || article.title.length >= 100)
@@ -104,70 +103,92 @@
 		}
 	};
 
-	articleService.addArticle = (article) => {
-		articles = articleService.getArticlesFromDb();
-		if (!articleService.validateArticle(article, true))
-			return false;
-		if(articles.find( (item) => { return item.id === article.id; }))
-			return false;
-		articles.push(article);
-		articleService.setArticlesToDb();
-		return true;
+	articleService.addArticle = article => {
+		return articleService.getArticlesFromDb().then(articles => {
+            if (!articleService.validateArticle(article, true))
+				return false;
+			if(articles.find( (item) => { return item.id === article.id; }))
+				return false;
+			articles.push(article);
+			return articles;
+        })
+			.then (articles => {
+				articleService.setArticlesToDb(articles);
+				return true;
+		});
 	};
 
 	articleService.editArticle = (id, article) => {
-		articles = articleService.getArticlesFromDb();
-		if (!articleService.validateArticle(article, false))
-			return false;
-		for (let i = 0; i < articles.length; ++i) {
-			if (articles[i].id === id) {
-				if (article.title !== '')
-					articles[i].title = article.title;
-				if (article.summary !== '')
-					articles[i].summary = article.summary;
-				if (article.content !== '')
-					articles[i].content = article.content;
-				articleService.setArticlesToDb();
-				return true;
+		articleService.getArticlesFromDb().then(articles => {
+            if (!articleService.validateArticle(article, false))
+				return false;
+			for (let i = 0; i < articles.length; ++i) {
+				if (articles[i].id === id) {
+					if (article.title !== '')
+						articles[i].title = article.title;
+					if (article.summary !== '')
+						articles[i].summary = article.summary;
+					if (article.content !== '')
+						articles[i].content = article.content;
+					return articles;
+				}
 			}
-		}
-		return false;
+			return false;
+        })
+			.then(articles => {
+				articleService.setArticlesToDb(articles);
+			});
 	};
 
-	articleService.removeArticle = (id) => {
-		articles = articleService.getArticlesFromDb();
-		if (isNaN(+id)) {
-			return false;
-		}
-		for (let i = 0; i < articles.length; ++i)
-			if (articles[i].id === id) {
-				articles.splice(i, 1);
-				articleService.setArticlesToDb();
-				return true;
+	articleService.removeArticle = id => {
+		return articleService.getArticlesFromDb().then(articles => {
+            if (isNaN(Number(id))) {
+				return false;
 			}
-		return false;
+			for (let i = 0; i < articles.length; ++i)
+				if (articles[i].id === id) {
+					articles.splice(i, 1);
+					return articles;
+				}
+			return false;
+        })
+			.then(articles => {
+				articleService.setArticlesToDb(articles);
+				return articles;
+			});
 	};
 
 
 
 	articleService.getArticlesFromDb = () => {
-		let xhr = new XMLHttpRequest();
-		xhr.open('GET', '/articles', false);
-		xhr.send();
 
-		articles = JSON.parse(xhr.responseText, (key, value) => {
-			if(key === 'createdAt') return new Date(value);
-			return value;
-		});
+		return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/articles', true);
 
-		return articles;
+            xhr.onload = () => {
+                let articles = JSON.parse(xhr.responseText, (key, value) => {
+                    if (key === 'createdAt') return new Date(value);
+                    return value;
+                });
+				resolve(articles);
+            };
+            xhr.send();
+        });
 	};
 
-	articleService.setArticlesToDb = () => {
-		let xhr = new XMLHttpRequest();
-		xhr.open('POST', '/articles', true);
-		xhr.setRequestHeader('content-type', 'application/json');
-		xhr.send(JSON.stringify(articles));
+	articleService.setArticlesToDb = articles => {
+
+		return new Promise((resolve, reject) => {
+			const xhr = new XMLHttpRequest();
+			xhr.open('POST', '/articles', true);
+			xhr.setRequestHeader('content-type', 'application/json');
+			xhr.onload = () => {
+				resolve();
+			};
+			xhr.send(JSON.stringify(articles));
+
+		});
 	};
 
 	window.articleService = articleService;

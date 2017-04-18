@@ -5,8 +5,7 @@
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-        "sourceType": "module",
-		"impliedStrict": true
+        "sourceType": "module"
     },
     "rules": {
 		"no-undef": 0,
@@ -25,6 +24,48 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "prefer-const": [
+            "error",
+            {
+            "destructuring": "any",
+            "ignoreReadBeforeAssign": false
+            }
+        ],
+        "no-var": "error",
+
+        "no-new-object": "error",
+
+        "no-array-constructor": "error",
+
+        "object-shorthand": [
+            "error",
+            "always"
+        ],
+
+        "array-callback-return": "error",
+
+        "quote-props": [
+            "error",
+            "as-needed"
+        ],
+
+        "prefer-template": "error",
+
+        "template-curly-spacing": [
+            "error",
+            "never"
+        ],
+        "no-useless-escape": "error",
+
+        "func-style": [
+            "error",
+            "expression",
+            {
+                "allowArrowFunctions": true
+            }
+        ],
+        "no-loop-func": "error"
+
     }
 }
