@@ -10,18 +10,18 @@
 	edit.init = (curArticle) => {
 		CURRENT_ARTICLE = curArticle;
 		NEWS_GRID = document.querySelector('.news-grid');
-		TEMPLATE_EDIT_ARTICLE = document.querySelector('#template-edit-article');
+		TEMPLATE_EDIT_ARTICLE = document.querySelector('#template-edit-article.js');
 	};
 
 	edit.handleEditArticle = () => {
 		NEWS_GRID.innerHTML = '';
-		NEWS_GRID.appendChild(TEMPLATE_EDIT_ARTICLE.content.querySelector('.edit-article').cloneNode(true));
+		NEWS_GRID.appendChild(TEMPLATE_EDIT_ARTICLE.content.querySelector('.edit-article.js').cloneNode(true));
 		const submit = document.querySelector('.edit');
 		submit.addEventListener('click', handleSubmitEditing);
 	};
 
 	const handleSubmitEditing = () => {
-		const form = document.forms['edit-article-form'];
+		const form = document.forms['edit-article.js-form'];
 		const article = {};
 		article.title = form.elements['title'].value;
 		article.content = form.elements['content'].value;

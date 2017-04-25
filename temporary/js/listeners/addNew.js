@@ -9,8 +9,8 @@
 
 	addNew.init = () => {
 		NEWS_GRID = document.querySelector('.news-grid');
-		TEMPLATE_NEW_ARTICLE = document.querySelector('#template-new-article');
-		ADD_BUTTON = document.querySelector('#add-new-article-button');
+		TEMPLATE_NEW_ARTICLE = document.querySelector('#template-new-article.js');
+		ADD_BUTTON = document.querySelector('#add-new-article.js-button');
 		ADD_BUTTON.addEventListener('click', handleAddNewArticle);
 	};
 
@@ -19,13 +19,13 @@
 		pagination.showHide.hide();
 		filter.showHide.hide();
 		NEWS_GRID.innerHTML = '';
-		NEWS_GRID.appendChild(TEMPLATE_NEW_ARTICLE.content.querySelector('.new-article').cloneNode(true));
+		NEWS_GRID.appendChild(TEMPLATE_NEW_ARTICLE.content.querySelector('.new-article.js').cloneNode(true));
 		const submit = document.querySelector('.add');
 		submit.addEventListener('click', handleSubmitAdding);
 	};
 
 	const handleSubmitAdding = () => {
-		const form = document.forms['new-article-form'];
+		const form = document.forms['new-article.js-form'];
 		const article = {};
 		articleService.getMaxId().then (maxId => {
 

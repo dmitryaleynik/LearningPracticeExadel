@@ -11,7 +11,7 @@
 
 
 	DOMService.init = () => {
-		ARTICLE_TEMPLATE = document.querySelector('#template-article-grid-item');
+		ARTICLE_TEMPLATE = document.querySelector('#template-article.js-grid-item');
 		ARTICLE_LIST_NODE = document.querySelector('.news-grid');
 		FILTER_SECTION = document.querySelector('#filter');
 		FILTER_TEMPLATE = document.querySelector('#filter-item-template');
@@ -33,12 +33,12 @@
 
 	const renderArticle = (article) => {
 		const template = ARTICLE_TEMPLATE;
-		template.content.querySelector('.article-grid-item').dataset.id = article.id;
-		template.content.querySelector('.article-grid-item-title').textContent = article.title;
-		template.content.querySelector('.article-grid-item-summary').textContent = article.summary;
-		template.content.querySelector('.article-grid-item-author').textContent = article.author;
-		template.content.querySelector('.article-grid-item-date').textContent = formatDate(article.createdAt);
-		return template.content.querySelector('.article-grid-item').cloneNode(true);
+		template.content.querySelector('.article.js-grid-item').dataset.id = article.id;
+		template.content.querySelector('.article.js-grid-item-title').textContent = article.title;
+		template.content.querySelector('.article.js-grid-item-summary').textContent = article.summary;
+		template.content.querySelector('.article.js-grid-item-author').textContent = article.author;
+		template.content.querySelector('.article.js-grid-item-date').textContent = formatDate(article.createdAt);
+		return template.content.querySelector('.article.js-grid-item').cloneNode(true);
 	};
 
 	const formatDate = (d) => {

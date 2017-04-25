@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link href="https://fonts.googleapis.com/css?family=Fredoka+One|Merriweather+Sans:300,400|Old+Standard+TT" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="UI/css/styles.css">
+	<title>News portal</title>
+</head>
+<body>
+<header>
+	<nav class="inside header-inside">
+		<a class="brand" href="index.html">
+			<img src="UI/images/logo.png">
+			<span>News portal</span>
+		</a>
+		<nav class="nav-buttons">
+			<div id="user-button">
+				Sign In
+			</div>
+		</nav>
+		<div class="user-window">
+		</div>
+	</nav>
+</header>
+
+
+<div class="inside content">
+	<section class="filter-section">
+		Filter:
+		<form>
+			<select id="filter">
+			</select>
+		</form>
+	</section>
+	<section class="news-grid">
+	</section>
+	<div id="pagination-button"></div>
+</div>
+
+
+<footer>
+	<div class="inside">
+		Developed by scream_cha. All rights reserved☻
+	</div>
+</footer>
+
+
+
+
+
+
+
+<template id="filter-item-template">
+	<option id="filter-item" value=""></option>
+</template>
+
+
+
+
+
+
+
+<script type="text/javascript" src="js/view/grid-item-view.js"></script>
+<script type="text/javascript" src="js/view/user-window-view.js"></script>
+<script type="text/javascript" src="js/view/article-details-view.js"></script>
+<script type="text/javascript" src="js/view/add-new-article-view.js"></script>
+<script type="text/javascript" src="js/view/edit-article-view.js"></script>
+
+
+<script type="text/javascript" src="js/wrappers/PromiseWrapper.js"></script>
+
+
+<script type="text/javascript" src="js/service/article-service.js"></script>
+<script type="text/javascript" src="js/service/user-service.js"></script>
+<script type="text/javascript" src="js/service/DOM-service.js"></script>
+
+
+
+<script type="text/javascript" src="js/initialization/details-init.js"></script>
+<script type="text/javascript" src="js/initialization/edit-article-init.js"></script>
+<script type="text/javascript" src="js/initialization/new-article-init.js"></script>
+<script type="text/javascript" src="js/initialization/grid-init.js"></script>
+<script type="text/javascript" src="js/initialization/user-init.js"></script>
+
+
+<script type="text/javascript" src="js/router/router.js"></script>
+
+
+</body>
+</html>

@@ -10,7 +10,7 @@
 
 	showFull.init = () => {
 		NEWS_GRID = document.querySelector('.news-grid');
-		TEMPLATE_ARTICLE_CONTENT = document.querySelector('#template-article-content');
+		TEMPLATE_ARTICLE_CONTENT = document.querySelector('#template-article.js-content');
 		NEWS_GRID.addEventListener('click', handleShowContentClick);
 	};
 
@@ -36,7 +36,7 @@
 			const temp = TEMPLATE_ARTICLE_CONTENT;
             temp.content.querySelector('.full-content').textContent =
                 receivedArticle.content;
-			return temp.content.querySelector('.article-content').cloneNode(true);
+			return temp.content.querySelector('.article.js-content').cloneNode(true);
         });
 	};
 

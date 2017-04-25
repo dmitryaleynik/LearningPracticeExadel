@@ -25,7 +25,7 @@
 		}
 		else {
 			LOGOUT_BUTTON.hidden = true;
-			document.querySelector('#add-new-article-button').hidden = true;
+			document.querySelector('#add-new-article.js-button').hidden = true;
 		}
 		USER_BUTTON.addEventListener('click', handleAuthorizeFormShowing);
 		LOGIN_BUTTON.addEventListener('click', handleLogIn);
@@ -58,7 +58,7 @@
 		user.logout();
 		DOMService.renderUser('Sign In');
 		LOGOUT_BUTTON.hidden = true;
-		document.querySelector('#add-new-article-button').hidden = true;
+		document.querySelector('#add-new-article.js-button').hidden = true;
 		USER_WINDOW.hidden = true;
 		AUTHORIZE_FORM.hidden = false;
 		remove.showHide.hide();

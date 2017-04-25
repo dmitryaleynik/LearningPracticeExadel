@@ -10,7 +10,7 @@
     "rules": {
 		"no-undef": 0,
         "indent": [
-            "error",
+            "warn",
             "tab"
         ],
         "linebreak-style": [
