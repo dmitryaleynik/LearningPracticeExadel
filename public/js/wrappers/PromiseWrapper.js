@@ -57,6 +57,23 @@
                 };
             })
         }
+
+        patch(value) {
+            return new Promise ((resolve, reject) => {
+                let xhr = new XMLHttpRequest();
+                xhr.open('PATCH', this.url, true);
+                xhr.setRequestHeader('content-type', 'application/json');
+                xhr.send(JSON.stringify(value));
+
+                xhr.onload = () => {
+                    this.onload(resolve, xhr);
+                };
+
+                xhr.onerror = () => {
+                    reject(new Error('Error :('));
+                };
+            })
+        }
     }
 
     window.PromiseWrapper = PromiseWrapper;

@@ -47,4 +47,4 @@
 	};
 
 	window.addNew = addNew;
-}(window.servicesInteraction, window.articleService, window.DOMService, window.pagination, window.filter, window.user);
+}(window.servicesInteraction, window.articleService, window.DOMService, window.pagination, window.filter, window.username);

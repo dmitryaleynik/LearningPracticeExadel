@@ -15,7 +15,7 @@
 		ARTICLE_LIST_NODE = document.querySelector('.news-grid');
 		FILTER_SECTION = document.querySelector('#filter');
 		FILTER_TEMPLATE = document.querySelector('#filter-item-template');
-		USER_BUTTON = document.querySelector('#user-button');
+		USER_BUTTON = document.querySelector('#username-button');
 	};
 
 	DOMService.insertArticlesInDOM = (articles) => {

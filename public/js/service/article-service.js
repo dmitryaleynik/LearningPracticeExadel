@@ -5,7 +5,7 @@
 
     articleService.maxId = 0;
 
-    articleService.getArticles = () => {
+    articleService.getArticles = (skip = 0, top = 3) => {
         let onload = (resolve, xhr) => {
             let articles = JSON.parse(xhr.responseText, (key, value) => {
                 if (key === 'createdAt') return new Date(value);
@@ -14,7 +14,8 @@
             articleService.recountMaxId();
             resolve(articles);
         };
-        return new PromiseWrapper('article/articles/', onload).get();
+        let url = 'article/articles?parameters=' + encodeURIComponent(JSON.stringify({skip: skip, top: top}));
+        return new PromiseWrapper(url, onload).get();
 
     };
 
@@ -40,6 +41,13 @@
           resolve(JSON.parse(xhr.responseText));
       };
       return new PromiseWrapper('article/delete/' + id + '', onload).delete();
+    };
+
+    articleService.editArticle = (id, article) => {
+      let onload = (resolve, xhr) => {
+          resolve();
+      };
+      return new PromiseWrapper('article/edit/' + id + '', onload).patch(article);
     };
 
     articleService.recountMaxId = () => {

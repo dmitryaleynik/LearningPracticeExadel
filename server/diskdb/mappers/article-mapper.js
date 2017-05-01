@@ -6,8 +6,13 @@ class ArticleMapper {
         this.connect = this.db.connect(__dirname + '/../data', ['articles']);
     }
 
-    getArticles() {
-        return this.db.articles.find();
+    getArticles(parameters) {
+        let articles = this.db.articles.find();
+        articles = articles.sort((a, b) => {
+            return (a.createdAt < b.createdAt) ? 1 : -1;
+        });
+        articles = articles.slice(parameters.skip, parameters.skip + parameters.top);
+        return articles;
     }
 
     getArticle(id) {
@@ -20,6 +25,10 @@ class ArticleMapper {
 
     removeArticle(id) {
         return this.db.articles.remove({id: id});
+    }
+
+    editArticle(id, article) {
+        return this.db.articles.update({id: id}, article);
     }
 
 }

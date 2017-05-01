@@ -11,8 +11,7 @@
             articleService.getArticle(curArticle.dataset.id).then (article => {
                 let grid = new ArticleDetailsView(article).render();
             });
-                // edit.EDIT_BUTTON = document.querySelector('#edit-button');
-                // edit.EDIT_BUTTON.addEventListener('click', edit.handleEditArticle);
+            return curArticle;
         }
     }
 

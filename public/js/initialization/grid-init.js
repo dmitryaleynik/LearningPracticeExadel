@@ -1,11 +1,14 @@
-;!function(articleService, GridItemView, ArticleDetailsInitialization, EditArticleInitialization) {
+;!function(articleService, GridItemView, ArticleDetailsInitialization, EditArticleInitialization,
+    PaginationInitialization) {
     "use strict";
 
     class GridInitialization {
 
+
         constructor() {
+            this.curArticle = "";
             this.grid = document.querySelector('.news-grid');
-            this.grid.addEventListener('click', this.onClicked.bind(this));
+            document.body.addEventListener('click', this.onClicked.bind(this));
         }
 
 
@@ -13,10 +16,14 @@
             if (!articles) {
                 articleService.getArticles().then(articles => {
                     this.articles = articles;
+                    this.pagination = new PaginationInitialization(articles);
                     this.render();
+
                 });
             } else {
-                this.render(articles);
+                //this.pagination = new PaginationInitialization(articles);
+                this.articles = articles;
+                this.render();
             }
         }
 
@@ -31,10 +38,11 @@
             console.log(event.target.dataset.response);
             switch(event.target.dataset.purpose) {
                 case 'details':
-                    new ArticleDetailsInitialization().init();
+                    this.curArticle = new ArticleDetailsInitialization().init();
                     break;
                 case 'back':
                     this.init();
+                    this.curArticle = "";
                     break;
                 case 'new-article-submit':
                     const form = document.forms['new-article-form'];
@@ -58,10 +66,27 @@
                     new EditArticleInitialization().init();
                     break;
                 case 'edit-article-submit':
+                    const form2 = document.forms['edit-article-form'];
+                    const article2 = {};
+                    if (form2.elements['title'].value)
+                        article2.title = form2.elements['title'].value;
+                    if (form2.elements['content'].value)
+                        article2.content = form2.elements['content'].value;
+                    if (form2.elements['summary'].value)
+                        article2.summary = form2.elements['summary'].value;
+                    articleService.editArticle(this.curArticle.dataset.id, article2).then(() => {
+                       this.init();
+                    });
+                    break;
+                case 'show-more':
+                    this.pagination.showMore().then (articles => {
+                        this.init(articles);
+                    });
                     break;
             }
         }
     }
 
     window.GridInitialization = GridInitialization;
-}(window.articleService, window.GridItemView, window.ArticleDetailsInitialization, window.EditArticleInitialization);
+}(window.articleService, window.GridItemView, window.ArticleDetailsInitialization, window.EditArticleInitialization,
+    window.PaginationInitialization);

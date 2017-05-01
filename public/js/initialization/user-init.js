@@ -19,7 +19,7 @@
                 this.userWindow.hidden = true;
                 if (user !== "[]") {
                     user = JSON.parse(user);
-                    DOMService.renderUser(user[0].user);
+                    DOMService.renderUser(user[0].username);
                     this.authorizeForm.hidden = true;
                 }
                 else {
@@ -41,7 +41,7 @@
                     case 'login':
                         const curUser = this.authorizeForm.elements[0].value;
                         const password = this.authorizeForm.elements[1].value;
-                        userService.login({user: curUser, password: password}).then (res => {
+                        userService.login({username: curUser, password: password}).then (res => {
                             if (res) {
                                 DOMService.renderUser(curUser);
                                 this.userWindow.hidden = true;

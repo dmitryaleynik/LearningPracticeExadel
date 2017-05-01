@@ -11,8 +11,8 @@
 	let AUTHORIZED_WINDOW;
 
 	user.init = () => {
-		USER_BUTTON = document.querySelector('#user-button');
-		USER_WINDOW = document.querySelector('.user-window');
+		USER_BUTTON = document.querySelector('#username-button');
+		USER_WINDOW = document.querySelector('.username-window');
 		LOGIN_BUTTON = document.querySelector('.login');
 		LOGOUT_BUTTON = document.querySelector('.logout');
 		AUTHORIZED_WINDOW = document.querySelector('.authorized');
@@ -45,7 +45,7 @@
 	const handleLogIn = () => {
 		const curUser = AUTHORIZE_FORM.elements[0].value;
 		const password = AUTHORIZE_FORM.elements[1].value;
-		if (user.login({user: curUser, password})) {
+		if (user.login({username: curUser, password})) {
 			DOMService.renderUser(curUser);
 			USER_WINDOW.hidden = true;
 			AUTHORIZE_FORM.hidden = true;
@@ -84,9 +84,9 @@
 		xhr.open('GET', '/curUser', false);
 		xhr.send();
 		const temp = JSON.parse(xhr.responseText)[0];
-		return temp ? temp.user : false;
+		return temp ? temp.username : false;
 	};
 
 
-	window.user = user;
+	window.username = user;
 }(window.DOMService, window.remove);
