@@ -10,7 +10,8 @@
             this.logoutButton = this.userWindow.querySelector('.logout');
             this.authorizedWindow = this.userWindow.querySelector('.authorized');
             this.authorizeForm = document.forms['authorize-form'];
-
+            this.showable = {pagination: document.querySelector('#pagination-button'),
+                filter: document.querySelector('.filter-section')};
         }
 
         init() {
@@ -19,16 +20,17 @@
                 this.userWindow.hidden = true;
                 if (user !== "[]") {
                     user = JSON.parse(user);
-                    DOMService.renderUser(user[0].username);
+                    window.curUser = user[0].username;
+                    DOMService.renderUser(window.curUser);
                     this.authorizeForm.hidden = true;
                 }
                 else {
+                    window.curUser = "";
                     this.logoutButton.hidden = true;
                     document.querySelector('#add-new-article-button').hidden = true;
                 }
                 this.userButton.addEventListener('click', this.handleAuthorizeFormShowing.bind(this));
                 this.userWindow.addEventListener('click', this.onClicked.bind(this));
-                //this.logoutButton.addEventListener('click', this.handleLogout.bind(this));
             });
         }
 
@@ -43,25 +45,28 @@
                         const password = this.authorizeForm.elements[1].value;
                         userService.login({username: curUser, password: password}).then (res => {
                             if (res) {
+                                window.curUser = curUser;
                                 DOMService.renderUser(curUser);
                                 this.userWindow.hidden = true;
                                 this.authorizeForm.hidden = true;
                                 this.authorizedWindow.hidden = false;
-                                //remove.showHide.show();
                             }
                         });
                         break;
                     case 'logout':
                         userService.logout().then(() => {
+                            window.curUser = "";
                             DOMService.renderUser('Sign In');
                             this.logoutButton.hidden = true;
                             document.querySelector('#add-new-article-button').hidden = true;
                             this.userWindow.hidden = true;
                             this.authorizeForm.hidden = false;
-                            //remove.showHide.hide();
                         });
                         break;
                     case 'new-article':
+                        Object.keys(this.showable).forEach(key => {
+                            this.showable[key].hidden = true;
+                        });
                         new NewArticleInitialization().init();
                         this.handleAuthorizeFormShowing();
                         break;

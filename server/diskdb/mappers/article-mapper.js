@@ -7,11 +7,17 @@ class ArticleMapper {
     }
 
     getArticles(parameters) {
-        let articles = this.db.articles.find();
+        let articles;
+        if (parameters.filter.author === "")
+            articles = this.db.articles.find();
+        else
+            articles = this.db.articles.find(parameters.filter);
         articles = articles.sort((a, b) => {
             return (a.createdAt < b.createdAt) ? 1 : -1;
         });
-        articles = articles.slice(parameters.skip, parameters.skip + parameters.top);
+        if (!parameters.top)
+            return articles;
+        articles = articles.slice(0, parameters.top);
         return articles;
     }
 

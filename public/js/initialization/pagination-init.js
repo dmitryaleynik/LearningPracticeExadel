@@ -7,14 +7,16 @@
             this.articles = articles;
             this.curPage = 1;
             this.total = articles.length;
+            this.top = 3;
             if (this.getTotalPages() <= this.curPage)
                 document.querySelector('#pagination-button').hidden = true;
-            this.top = 3;
+            else
+                document.querySelector('#pagination-button').hidden = false;
         }
 
         showMore() {
             const top = this.nextPage();
-            return articleService.getArticles(0, top);
+            return articleService.getArticles(top);
         }
 
         nextPage() {

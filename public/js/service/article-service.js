@@ -5,7 +5,7 @@
 
     articleService.maxId = 0;
 
-    articleService.getArticles = (skip = 0, top = 3) => {
+    articleService.getArticles = (top = 0, filter = {}) => {
         let onload = (resolve, xhr) => {
             let articles = JSON.parse(xhr.responseText, (key, value) => {
                 if (key === 'createdAt') return new Date(value);
@@ -14,7 +14,7 @@
             articleService.recountMaxId();
             resolve(articles);
         };
-        let url = 'article/articles?parameters=' + encodeURIComponent(JSON.stringify({skip: skip, top: top}));
+        let url = 'article/articles?parameters=' + encodeURIComponent(JSON.stringify({top: top, filter: filter}));
         return new PromiseWrapper(url, onload).get();
 
     };
@@ -56,6 +56,48 @@
                 if (articleService.maxId < item.id) articleService.maxId = item.id;
             });
         });
+    };
+
+    articleService.validateArticle = (article, mode) => {
+        if (mode) {
+            if (Object.keys(article).length !== 6)
+                return false;
+            const a = Number(article.id);
+            if (isNaN(a))
+                return false;
+            if (typeof article.title !== 'string' || article.title.length >= 100)
+                return false;
+            if (typeof article.summary !== 'string' || article.summary.length >= 200)
+                return false;
+            if (!(article.createdAt instanceof Date))
+                return false;
+            if (typeof article.author !== 'string')
+                return false;
+            if (typeof article.content !== 'string')
+                return false;
+            return true;
+        }
+        else {
+            if (article.title === undefined && article.summary === undefined && article.content === undefined)
+                return false;
+            if (article.title !== undefined) {
+                if (typeof article.title !== 'string')
+                    return false;
+                else if (article.title.length >= 100)
+                    return false;
+            }
+            if (article.summary !== undefined) {
+                if (typeof article.summary !== 'string')
+                    return false;
+                else if (article.summary.length >= 200)
+                    return false;
+            }
+            if (article.content !== undefined) {
+                if (typeof article.content !== 'string')
+                    return false;
+            }
+            return true;
+        }
     };
 
 window.articleService = articleService;
