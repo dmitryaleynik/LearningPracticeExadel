@@ -18,9 +18,8 @@
             this.userWindow.hidden = true;
             userService.getCurrentUser().then(user => {
                 this.userWindow.hidden = true;
-                if (user !== "[]") {
-                    user = JSON.parse(user);
-                    window.curUser = user[0].username;
+                if (user !== "Unauthorized") {
+                    window.curUser = user;
                     DOMService.renderUser(window.curUser);
                     this.authorizeForm.hidden = true;
                 }
@@ -41,9 +40,7 @@
             onClicked(event) {
                 switch(event.target.dataset.purpose) {
                     case 'login':
-                        const curUser = this.authorizeForm.elements[0].value;
-                        const password = this.authorizeForm.elements[1].value;
-                        userService.login({username: curUser, password: password}).then (res => {
+                        userService.login({status: "ok"}).then (res => {
                             if (res) {
                                 window.curUser = curUser;
                                 DOMService.renderUser(curUser);

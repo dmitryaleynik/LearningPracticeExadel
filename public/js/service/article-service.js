@@ -11,12 +11,13 @@
                 if (key === 'createdAt') return new Date(value);
                 return value;
             });
-            articleService.recountMaxId();
+            //articleService.recountMaxId();
             resolve(articles);
         };
-        let url = 'article/articles?parameters=' + encodeURIComponent(JSON.stringify({top: top, filter: filter}));
+        let url = '/article/articles?parameters=' + encodeURIComponent(JSON.stringify({top: top, filter: filter}));
         return new PromiseWrapper(url, onload).get();
 
+        return promise;
     };
 
     articleService.getArticle = id => {

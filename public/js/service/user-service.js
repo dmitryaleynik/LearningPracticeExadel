@@ -8,15 +8,15 @@
             resolve(xhr.responseText);
         };
 
-        return new PromiseWrapper('/user/curUser/', onload).get();
+        return new PromiseWrapper('/user/curUser', onload).get();
     };
 
-    userService.login = user => {
+    userService.login = status => {
       let onload = (resolve, xhr) => {
           xhr.status === 400 ? resolve(false) : resolve(true);
       };
 
-      return new PromiseWrapper('/user/login/', onload).post(user);
+      return new PromiseWrapper('/user/signin', onload).post(status);
     };
 
     userService.logout = () => {
@@ -24,7 +24,7 @@
           resolve();
       };
 
-      return new PromiseWrapper('/user/logout/', onload).delete();
+      return new PromiseWrapper('/user/logout', onload).delete();
     };
 
     window.userService = userService;

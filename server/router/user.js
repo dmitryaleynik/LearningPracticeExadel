@@ -1,24 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const userMapper = require('./../diskdb/mappers/user-mapper');
+const passport = require('./../passport/passport');
 
 router.get('/curUser/', (req, res) => {
-   res.send(userMapper.getCurrentUser());
+   req.user ? res.send(req.user.username) : res.sendStatus(401);
 });
 
-router.post('/login/', (req, res) => {
-   let user = req.body;
-   if (userMapper.searchUser(user).length !== 0) {
-      userMapper.login(user);
-      res.json(req.body);
-   } else {
-      res.status(400).send('Wrong login or password! Please try again!');
-   }
+router.post('/signin', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/'}),
+    (req, res) => {
+   console.log(req.body);
+   console.log(res.user);
+   res.sendStatus(200);
 });
 
-router.delete('/logout/', (req, res) => {
-   userMapper.logout();
-   res.json(req.body);
+router.delete('/logout', (req, res) => {
+   req.logout();
+   res.sendStatus(200);
 });
 
 module.exports = router;

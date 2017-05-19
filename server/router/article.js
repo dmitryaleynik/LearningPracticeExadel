@@ -1,10 +1,13 @@
-'use strict';
 const express = require('express');
 const router = express.Router();
-const articleMapper = require('./../diskdb/mappers/article-mapper');
+const articleDb = require('./../db/article-db');
 
 router.get('/articles', (req, res) => {
-    res.send(articleMapper.getArticles(JSON.parse(req.query.parameters)));
+
+    articleDb.getArticles(JSON.parse(req.query.parameters).filter).exec((err, articles) => {
+        console.log('test');
+        res.send(articles);
+    });
 });
 
 router.get('/article/:id', (req, res) => {
