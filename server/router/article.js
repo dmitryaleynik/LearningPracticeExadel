@@ -4,7 +4,7 @@ const articleDb = require('./../db/article-db');
 
 router.get('/articles', (req, res) => {
 
-  articleDb.getArticles(JSON.parse(req.query.parameters).filter).exec((err, articles) => {
+  articleDb.getArticles(JSON.parse(req.query.parameters)).exec((err, articles) => {
     res.send(articles);
   });
 });

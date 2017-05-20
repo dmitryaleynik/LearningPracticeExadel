@@ -50,14 +50,6 @@
       return new PromiseWrapper('article/edit/' + id + '', onload).patch(article);
     };
 
-    articleService.recountMaxId = () => {
-        articleService.getArticles().then(articles => {
-            articles.forEach(item => {
-                if (articleService.maxId < item.id) articleService.maxId = item.id;
-            });
-        });
-    };
-
     articleService.validateArticle = (article, mode) => {
         if (mode) {
             if (Object.keys(article).length !== 5)

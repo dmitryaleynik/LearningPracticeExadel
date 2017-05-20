@@ -12,8 +12,8 @@ class ArticleDb {
     this.model = this.mongoose.model('articles', this.schema);
   }
 
-  getArticles(filter) {
-    return this.model.find(filter).sort({createdAt: -1});
+  getArticles(parameters) {
+    return this.model.find(parameters.filter).sort({createdAt: -1}).limit(parameters.top);
   }
 
   getArticle(id) {

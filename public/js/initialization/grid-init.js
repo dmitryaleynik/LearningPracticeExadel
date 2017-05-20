@@ -118,7 +118,8 @@
     }
 
     onChange(event) {
-      this.filter = {author: event.currentTarget.value};
+      let temp = event.currentTarget.value;
+      temp ? this.filter = {author: temp} : this.filter = {};
       this.init();
     }
   }
