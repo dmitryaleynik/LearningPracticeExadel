@@ -22,7 +22,7 @@
 
             let item = document.createElement('section');
             item.className = 'article-grid-item col-lg-4 col-md-6';
-            item.dataset.id = this.article.id;
+            item.dataset.id = this.article._id;
             item.innerHTML = view;
 
             return item;

@@ -4,10 +4,10 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const store = new MongoDBStore(
-    {
-        uri: 'mongodb://localhost:27017/newsportal',
-        collection: 'sessions'
-});
+  {
+    uri: 'mongodb://localhost:27017/newsportal',
+    collection: 'sessions'
+  });
 const passport = require('./server/passport/passport');
 
 
@@ -15,13 +15,13 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session(
-    {
-        name: 'sess',
-        secret: 'curUser',
-        resave: true,
-        saveUninitialized: true,
-        store: store
-    }));
+  {
+    name: 'sess',
+    secret: 'curUser',
+    resave: true,
+    saveUninitialized: true,
+    store: store
+  }));
 app.use(passport.initialize());
 app.use(passport.session());
 

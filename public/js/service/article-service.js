@@ -11,7 +11,6 @@
                 if (key === 'createdAt') return new Date(value);
                 return value;
             });
-            //articleService.recountMaxId();
             resolve(articles);
         };
         let url = '/article/articles?parameters=' + encodeURIComponent(JSON.stringify({top: top, filter: filter}));
@@ -22,7 +21,7 @@
 
     articleService.getArticle = id => {
         let onload = (resolve, xhr) => {
-            let article = JSON.parse(xhr.responseText)[0];
+            let article = JSON.parse(xhr.responseText);
             article.createdAt = new Date(article.createdAt);
             resolve(article);
         };
@@ -61,10 +60,7 @@
 
     articleService.validateArticle = (article, mode) => {
         if (mode) {
-            if (Object.keys(article).length !== 6)
-                return false;
-            const a = Number(article.id);
-            if (isNaN(a))
+            if (Object.keys(article).length !== 5)
                 return false;
             if (typeof article.title !== 'string' || article.title.length >= 100)
                 return false;
