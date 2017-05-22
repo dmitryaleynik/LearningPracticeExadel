@@ -10,7 +10,7 @@
       this.grid = document.querySelector('.news-grid');
       document.body.addEventListener('click', this.onClicked.bind(this));
       document.querySelector('#filter').addEventListener('change', this.onChange.bind(this));
-      this.showable = {pagination: document.querySelector('#pagination-button')};
+      window.showable = {pagination: document.querySelector('#pagination-button')};
     }
 
 
@@ -33,41 +33,48 @@
     }
 
     setFilterSection() {
-      if (!this.showable.filter) {
+      if (!showable.filter) {
         let authors = new Set();
         this.articles.forEach(item => {
           authors.add(item.author);
         });
         new FilterInitialization(Array.from(authors)).render();
-        this.showable.filter = document.querySelector('.filter-section');
+        showable.filter = document.querySelector('.filter-section');
       }
     }
 
     render() {
       this.grid.innerHTML = '';
       this.articles.forEach(item => {
+        console.log(item);
         this.grid.appendChild(new GridItemView(item).render());
+      });
+      showable.remove = Array.from(document.querySelectorAll('#remove-button'));
+      let ch;
+      window.curUser === "" ? ch = true : ch = false;
+      window.showable.remove.forEach(item => {
+        item.hidden = ch;
       });
     }
 
     onClicked(event) {
       switch (event.target.dataset.purpose) {
         case 'details':
-          Object.keys(this.showable).forEach(key => {
-            this.showable[key].hidden = true;
+          Object.keys(showable).forEach(key => {
+            showable[key].hidden = true;
           });
           this.curArticle = new ArticleDetailsInitialization().init();
           break;
         case 'back':
-          Object.keys(this.showable).forEach(key => {
-            this.showable[key].hidden = false;
+          Object.keys(showable).forEach(key => {
+            showable[key].hidden = false;
           });
           this.init();
           this.curArticle = "";
           break;
         case 'new-article-submit':
-          Object.keys(this.showable).forEach(key => {
-            this.showable[key].hidden = false;
+          Object.keys(showable).forEach(key => {
+            showable[key].hidden = false;
           });
           const form = document.forms['new-article-form'];
           const article = {};
@@ -91,8 +98,8 @@
           new EditArticleInitialization().init();
           break;
         case 'edit-article-submit':
-          Object.keys(this.showable).forEach(key => {
-            this.showable[key].hidden = false;
+          Object.keys(showable).forEach(key => {
+            showable[key].hidden = false;
           });
           const form2 = document.forms['edit-article-form'];
           const article2 = {};

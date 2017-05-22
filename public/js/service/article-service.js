@@ -15,8 +15,6 @@
         };
         let url = '/article/articles?parameters=' + encodeURIComponent(JSON.stringify({top: top, filter: filter}));
         return new PromiseWrapper(url, onload).get();
-
-        return promise;
     };
 
     articleService.getArticle = id => {
